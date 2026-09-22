@@ -60,3 +60,17 @@ Do not reuse or publish the previously exposed signed test URL.
 - Amber: Current/Due only, with at least one Due.
 - Red: any Failed, Expired or Not Taken.
 - Certificate enabled only for Green / 6 of 6 Current.
+
+
+## V5 interface changes
+- Page title: `Guarding Training Compliance`
+- Main heading: `Securit Guarding Induction & Core Training`
+- Ops Manager email hidden from table and officer detail view
+- Company / labour provider dropdown generated dynamically from live `Contractor` values
+- Search still supports officer name, Staff ID, site and manager name
+
+
+## V6
+Dashboard summary cards are now dynamic. Active Staff, Green, Amber, Red and Compliance
+recalculate against the currently visible result set after RAG filters, provider dropdown
+selection and text search are applied.

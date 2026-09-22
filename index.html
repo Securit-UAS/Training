@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="theme-color" content="#ffffff">
-  <title>Securit Training Compliance</title>
+  <title>Securit Guarding Training Compliance</title>
   <style>
     :root{
       --bg:#f4f6f8;
@@ -67,6 +67,10 @@
     .filterbtn{background:#fff;border:1px solid var(--line);color:var(--muted);border-radius:9px;padding:8px 10px;font-weight:750}
     .filterbtn.active{color:var(--navy);border-color:#8796c9;background:#f1f4ff}
     .count{color:var(--muted);font-size:.88rem}
+    .provider-filter{display:flex;align-items:center;gap:8px;margin-left:auto}
+    .provider-filter label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:800;white-space:nowrap}
+    .provider-filter select{background:#fff;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:8px 10px;min-width:210px}
+
     .tablewrap{overflow:auto;border-radius:var(--radius)}
     table{border-collapse:separate;border-spacing:0;width:100%;min-width:1460px;background:#fff}
     th,td{padding:11px 11px;border-bottom:1px solid var(--line);vertical-align:middle}
@@ -126,7 +130,7 @@
       .shell{padding:13px}
       .topbar{align-items:flex-start;flex-direction:column}
       .stats{grid-template-columns:1fr 1fr}
-      .toolbar{align-items:flex-start;flex-direction:column}
+      .toolbar{align-items:flex-start;flex-direction:column}.provider-filter{margin-left:0;align-items:flex-start;flex-direction:column;width:100%}.provider-filter select{width:100%;min-width:0}
       .searchrow{flex-direction:column}
       .officerhero{align-items:flex-start;flex-direction:column}
       .brand img{height:48px}
@@ -145,7 +149,7 @@
     <div class="brand">
       <img src="securit-logo.png" alt="Securit">
       <div>
-        <h1>Training Compliance</h1>
+        <h1>Guarding Training Compliance</h1>
         <p>Securit live training register</p>
       </div>
     </div>
@@ -155,8 +159,8 @@
   <section class="hero">
     <article class="card intro">
       <span class="eyebrow">Compliance dashboard</span>
-      <h2>Six-course training register</h2>
-      <p>Latest attempt governs each course. Passed training becomes due for reassessment after 11 calendar months and expires after 12 calendar months. Officer site is taken from the newest Rolling Staff DB record and matched to the CMS Estate DB to identify the responsible Operations Manager.</p>
+      <h2>Securit Guarding Induction &amp; Core Training</h2>
+      <p>Live compliance status for active officers across the six mandatory training modules. Passed training becomes due for reassessment after 11 calendar months and expires after 12 calendar months. Officer site is taken from the newest Rolling Staff DB record and matched to the CMS Estate DB to identify the responsible Operations Manager.</p>
       <div class="legend">
         <span class="pill current">Current</span>
         <span class="pill due">Reassessment Due</span>
@@ -188,6 +192,12 @@
       <button class="filterbtn" data-filter="green">Green</button>
       <button class="filterbtn" data-filter="amber">Amber</button>
       <button class="filterbtn" data-filter="red">Red</button>
+    </div>
+    <div class="provider-filter">
+      <label for="providerFilter">Company / labour provider</label>
+      <select id="providerFilter">
+        <option value="all">All Officers</option>
+      </select>
     </div>
     <span class="count" id="resultCount"></span>
   </section>
@@ -282,6 +292,7 @@ const MANAGER_NAMES = {
 
 let officers = [];
 let activeFilter = "all";
+let activeProvider = "all";
 let selectedOfficer = null;
 
 const el = id => document.getElementById(id);
@@ -416,7 +427,7 @@ function officerRow(o){
   return `<tr data-rag="${o.overall.code}">
     <td class="person"><strong>${escapeHtml(o.fullName)}</strong><small>${escapeHtml(o.staffId)}${o.contractor ? " · "+escapeHtml(o.contractor):""}</small></td>
     <td class="sitecell">${escapeHtml(o.siteName || "—")}${siteSub}</td>
-    <td class="managercell">${escapeHtml(o.managerName)}<span class="sub">${escapeHtml(o.managerEmail)}</span></td>
+    <td class="managercell">${escapeHtml(o.managerName)}</td>
     ${COURSE_DEFS.map(c=>`<td>${courseCell(o.courses[c.key])}</td>`).join("")}
     <td class="overall"><span class="ragdot ${o.overall.code}"></span>${o.overall.code.toUpperCase()}</td>
     <td><button class="btn secondary detailsbtn" data-id="${escapeHtml(o.staffId)}">View record</button></td>
@@ -425,23 +436,35 @@ function officerRow(o){
 function filteredOfficers(){
   const q=el("searchInput").value.trim().toLowerCase();
   return officers.filter(o=>{
-    const filterOk=activeFilter==="all" || o.overall.code===activeFilter;
-    const haystack=[o.staffId,o.fullName,o.contractor,o.siteName,o.managerName,o.managerEmail].join(" ").toLowerCase();
-    return filterOk && (!q || haystack.includes(q));
+    const ragOk=activeFilter==="all" || o.overall.code===activeFilter;
+    const providerOk=activeProvider==="all" || normaliseKey(o.contractor)===activeProvider;
+    const haystack=[o.staffId,o.fullName,o.contractor,o.siteName,o.managerName].join(" ").toLowerCase();
+    return ragOk && providerOk && (!q || haystack.includes(q));
   });
 }
+function populateProviderFilter(){
+  const select=el("providerFilter");
+  const current=activeProvider;
+  const providers=[...new Set(officers.map(o=>normaliseSpace(o.contractor)).filter(Boolean))]
+    .sort((a,b)=>a.localeCompare(b,"en-GB"));
+  select.innerHTML='<option value="all">All Officers</option>' +
+    providers.map(p=>`<option value="${escapeHtml(normaliseKey(p))}">${escapeHtml(p)}</option>`).join("");
+  if ([...select.options].some(o=>o.value===current)) select.value=current;
+}
+
 function render(){
   const list=filteredOfficers();
+  renderStats(list);
   el("officerRows").innerHTML=list.map(officerRow).join("");
   el("emptyState").classList.toggle("hidden",list.length!==0);
   el("resultCount").textContent=`${list.length} officer${list.length===1?"":"s"} shown`;
   document.querySelectorAll(".detailsbtn").forEach(btn=>btn.addEventListener("click",()=>openOfficer(btn.dataset.id)));
 }
-function renderStats(){
-  const total=officers.length;
-  const green=officers.filter(o=>o.overall.code==="green").length;
-  const amber=officers.filter(o=>o.overall.code==="amber").length;
-  const red=officers.filter(o=>o.overall.code==="red").length;
+function renderStats(list = filteredOfficers()){
+  const total=list.length;
+  const green=list.filter(o=>o.overall.code==="green").length;
+  const amber=list.filter(o=>o.overall.code==="amber").length;
+  const red=list.filter(o=>o.overall.code==="red").length;
   el("statTotal").textContent=total.toLocaleString("en-GB");
   el("statGreen").textContent=green.toLocaleString("en-GB");
   el("statAmber").textContent=amber.toLocaleString("en-GB");
@@ -455,7 +478,7 @@ function openOfficer(staffId){
   el("modalName").textContent=o.fullName;
   el("modalStaff").textContent=o.staffId;
   el("modalSite").textContent=o.siteName || "Not available";
-  el("modalManager").textContent=o.managerName + (o.managerEmail ? ` (${o.managerEmail})` : "");
+  el("modalManager").textContent=o.managerName;
   el("modalOverall").innerHTML=`<span class="pill ${o.overall.code}">${o.overall.label}</span>`;
   el("moduleGrid").innerHTML=COURSE_DEFS.map(c=>{
     const s=o.courses[c.key];
@@ -500,7 +523,7 @@ async function loadData(){
     if(missing.length) throw new Error(`Missing API arrays: ${missing.join(", ")}`);
 
     officers=buildOfficerData(payload);
-    renderStats();
+    populateProviderFilter();
     render();
 
     const unmatched=officers.filter(o=>o.siteName && !o.siteMatched).length;
@@ -520,6 +543,10 @@ document.querySelectorAll(".filterbtn").forEach(btn=>{
     document.querySelectorAll(".filterbtn").forEach(b=>b.classList.toggle("active",b===btn));
     render();
   });
+});
+el("providerFilter").addEventListener("change",()=>{
+  activeProvider=el("providerFilter").value;
+  render();
 });
 el("searchInput").addEventListener("input",render);
 el("searchBtn").addEventListener("click",render);
