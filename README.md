@@ -9,7 +9,7 @@ Static GitHub Pages front-end for the Induction Training Compliance project.
 - Action Required panel
 - Officer search by Staff ID
 - Sample officer record
-- Responsive layout
+- Responsive  layout
 - `data.json` contract ready for Power Automate-generated data
 
 ## Files
