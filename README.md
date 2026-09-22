@@ -1,50 +1,34 @@
-# Training Compliance Dashboard
+# Secur-IT Training Compliance Dashboard V3
 
-Static GitHub Pages front-end for the Induction Training Compliance project.
+Files:
+- index.html — complete GitHub Pages dashboard
+- data.json — current API payload, included only for local/GitHub testing
 
-## Included
-- Seven induction assessments
-- KPI summary
-- Course-by-course compliance table
-- Action Required panel
-- Officer search by Staff ID
-- Sample officer record
-- Responsive layout
-- `data.json` contract ready for Power Automate-generated data
+## Testing
+Upload both files to the GitHub Pages folder/repository and leave:
 
-## Files
-- `index.html`
-- `styles.css`
-- `app.js`
-- `data.json`
+    const API_URL = "";
 
-## GitHub Pages
-Upload these files to the root of a GitHub repository and enable GitHub Pages for the repository branch.
+The page will load `./data.json`.
 
-## Proposed production data flow
-Microsoft Forms Excel tables -> Power Automate -> normalised compliance dataset -> website
+## Live API
+When the production Power Automate endpoint/authentication is ready, set `API_URL`
+in index.html to the live endpoint or replace the fetch logic with the final MSAL/Entra call.
 
-## Ethics course rules
-- Pass mark: 6
-- Ignore rows with blank Staff ID
-- Ignore Form-entered manager/site/name for compliance
-- Staff ID is the join key
-- Current Full Name comes from the live SharePoint staffing list
-- Reassessment Due: >= 11 months since most recent valid pass and < 12 months
-- Expired: >= 12 months since most recent valid pass
-- Failed: latest assessment is below pass mark and no later pass supersedes it
-- Not Taken: active Staff ID has no valid assessment record
+Do not commit a SAS-signed Power Automate test URL to a public GitHub repository.
 
-The sample data is illustrative only.
-
-
-## Certificate generation
-Officer Search now includes a Generate Certificate button.
-
-Rules:
-- Button is enabled only when all seven induction modules are `Current`.
-- Certificate shows officer name and Staff ID from the live staffing dataset.
-- Each module shows its latest pass date.
-- Valid-until date is the earliest 12-month expiry across the seven current passes.
-- Certificate reference format: `IND-<StaffID>-YYYYMMDD`.
-- Print view is A4 landscape and can be printed directly or saved as PDF from the browser.
+## Logic
+- Active staff comes from `staff`
+- Duplicate staff IDs are deduplicated client-side
+- Course history is not deduplicated
+- Latest attempt wins
+- Failed latest attempt = Failed
+- Passed latest attempt:
+  - under 11 calendar months = Current
+  - 11 to under 12 calendar months = Reassessment Due
+  - 12+ calendar months = Expired
+- No attempt = Not Taken
+- Green = 6/6 Current
+- Amber = no Failed/Expired/Not Taken, with one or more Reassessment Due
+- Red = any Failed/Expired/Not Taken
+- Certificate available only for Green / 6 of 6 Current
