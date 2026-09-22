@@ -1,0 +1,77 @@
+
+:root{
+  --bg:#f5f7fb;
+  --panel:#ffffff;
+  --ink:#12213a;
+  --muted:#6f7f95;
+  --line:#dfe6ef;
+  --blue:#1769e0;
+  --blue-dark:#18314f;
+  --green:#22a060;
+  --amber:#e5a11d;
+  --red:#df3d34;
+  --grey:#8fa0b5;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
+button,input{font:inherit}
+.app-shell{display:flex;min-height:100vh}
+.sidebar{width:240px;background:linear-gradient(180deg,#20364e,#172a3f);color:white;display:flex;flex-direction:column}
+.brand{display:flex;gap:12px;align-items:center;padding:24px 20px;border-bottom:1px solid rgba(255,255,255,.08)}
+.brand-mark{width:38px;height:38px;border-radius:10px;background:#2a7df0;display:grid;place-items:center;font-weight:800}
+.brand-title{font-weight:800;font-size:20px}
+.brand-sub{font-size:11px;color:#afbed0}
+nav{padding:14px 0}
+.nav-item{width:100%;border:0;background:transparent;color:#dce5ef;text-align:left;padding:14px 22px;cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.nav-item:hover,.nav-item.active{background:#2462ad;color:white}
+.badge{background:#d93b35;color:white;border-radius:999px;padding:2px 7px;font-size:11px}
+.sidebar-footer{margin-top:auto;padding:22px;color:#8fa1b6;font-size:12px;line-height:1.4}
+.main{flex:1;padding:28px;overflow:auto}
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:22px}
+h1{font-size:30px;margin:0 0 5px}
+.topbar p{margin:0;color:var(--muted);font-size:17px}
+.topbar-meta{display:flex;gap:18px;align-items:center;color:var(--muted);font-size:13px}
+.primary-btn,.secondary-btn,.link-btn{border-radius:8px;cursor:pointer}
+.primary-btn{border:0;background:var(--blue);color:white;padding:11px 18px}
+.secondary-btn{background:white;border:1px solid var(--line);padding:10px 14px;color:var(--ink)}
+.link-btn{border:0;background:transparent;color:var(--blue)}
+.kpi-grid{display:grid;grid-template-columns:repeat(6,minmax(130px,1fr));gap:12px;margin-bottom:16px}
+.kpi-card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px}
+.kpi-label{font-size:13px;color:#556579;margin-bottom:6px}
+.kpi-value{font-size:28px;font-weight:800}
+.kpi-card.green{border-top:4px solid var(--green)}
+.kpi-card.amber{border-top:4px solid var(--amber)}
+.kpi-card.red{border-top:4px solid var(--red)}
+.kpi-card.grey{border-top:4px solid var(--grey)}
+.kpi-card.blue{border-top:4px solid var(--blue)}
+.content-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(320px,.95fr);gap:16px}
+.left-column,.right-column{display:flex;flex-direction:column;gap:16px}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+.panel-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.panel-header h2{font-size:18px;margin:0}
+.table-wrap{overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{background:#f0f4f8;text-align:left;color:#43546a;padding:10px;border-bottom:1px solid var(--line)}
+td{padding:10px;border-bottom:1px solid #edf1f5;vertical-align:middle}
+.progress{display:flex;align-items:center;gap:8px}
+.progress-track{height:8px;background:#e7edf4;border-radius:999px;min-width:72px;overflow:hidden}
+.progress-fill{height:100%;border-radius:999px;background:var(--green)}
+.status{display:inline-block;padding:4px 8px;border-radius:6px;font-size:12px;font-weight:700}
+.status.current{background:#daf3e2;color:#167840}
+.status.due{background:#fff0c7;color:#9a6500}
+.status.expired,.status.failed{background:#ffe0dd;color:#b52c24}
+.status.not-taken{background:#e7ecf2;color:#58687c}
+.search-row{display:flex;gap:8px}
+.search-row input{flex:1;padding:11px 12px;border:1px solid var(--line);border-radius:8px}
+.officer-result{margin-top:14px}
+.empty-state{padding:24px 8px;color:var(--muted);text-align:center}
+.officer-head{display:flex;justify-content:space-between;gap:15px;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:8px}
+.officer-name{font-size:18px;font-weight:800}
+.officer-meta{color:var(--muted);font-size:13px}
+.overall-status{font-size:13px;text-align:right}
+.overall-status strong{display:block;font-size:15px;margin-top:3px}
+.info-panel{padding:22px;border-radius:12px;background:#eaf4ff;color:#154c8b}
+.info-panel h3{margin:0 0 8px}
+.info-panel p{margin:0;line-height:1.5}
+@media(max-width:1200px){.kpi-grid{grid-template-columns:repeat(3,1fr)}.content-grid{grid-template-columns:1fr}.sidebar{width:205px}}
+@media(max-width:760px){.sidebar{display:none}.main{padding:16px}.kpi-grid{grid-template-columns:repeat(2,1fr)}.topbar{gap:15px}.topbar-meta{align-items:flex-end;flex-direction:column}}

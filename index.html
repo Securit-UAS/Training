@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Training Compliance Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark">S</div>
+        <div>
+          <div class="brand-title">SecurTrain</div>
+          <div class="brand-sub">People. Training. Safer Sites.</div>
+        </div>
+      </div>
+
+      <nav>
+        <button class="nav-item active">Dashboard</button>
+        <button class="nav-item">Induction</button>
+        <button class="nav-item" id="navOfficerSearch">Officer Search</button>
+        <button class="nav-item">Action Required <span class="badge">12</span></button>
+        <button class="nav-item">Reports</button>
+        <button class="nav-item">Settings</button>
+      </nav>
+
+      <div class="sidebar-footer">Building a safer<br/>tomorrow, together.</div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h1>Training Compliance Dashboard</h1>
+          <p>Induction Training</p>
+        </div>
+        <div class="topbar-meta">
+          <div id="generatedTime">Last updated: —</div>
+          <button class="secondary-btn" id="exportBtn">Export Report</button>
+        </div>
+      </header>
+
+      <section class="kpi-grid" id="kpiGrid"></section>
+
+      <section class="content-grid">
+        <div class="left-column">
+          <section class="panel">
+            <div class="panel-header">
+              <h2>Induction Assessments</h2>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Assessment</th>
+                    <th>Current</th>
+                    <th>Due</th>
+                    <th>Expired</th>
+                    <th>Failed</th>
+                    <th>Not Taken</th>
+                    <th>Compliance</th>
+                  </tr>
+                </thead>
+                <tbody id="courseTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <h2>Action Required</h2>
+              <button class="link-btn" id="viewAllAction">View all</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Staff ID</th>
+                    <th>Issue</th>
+                    <th>Courses Affected</th>
+                    <th>Next Action</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="actionTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+
+        <div class="right-column">
+          <section class="panel" id="officerSearchPanel">
+            <div class="panel-header">
+              <h2>Officer Search</h2>
+            </div>
+            <div class="search-row">
+              <input id="staffSearch" type="text" inputmode="numeric" placeholder="Search by Staff ID" />
+              <button class="primary-btn" id="searchBtn">Search</button>
+            </div>
+            <div id="officerResult" class="officer-result empty-state">
+              Enter a Staff ID to view an officer's induction training record.
+            </div>
+          </section>
+
+          <section class="info-panel">
+            <h3>Supporting a safer, more compliant workforce</h3>
+            <p>Track induction training, identify gaps and quickly confirm an officer's current training status.</p>
+          </section>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

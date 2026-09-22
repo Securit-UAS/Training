@@ -1,0 +1,175 @@
+{
+  "generatedAt": "2026-09-22T11:15:00+01:00",
+  "activeStaff": 497,
+  "courses": [
+    {
+      "id": "ethics",
+      "name": "Ethics and Compliance Knowledge",
+      "passMark": 6,
+      "current": 412,
+      "due": 18,
+      "expired": 7,
+      "failed": 4,
+      "notTaken": 56
+    },
+    {
+      "id": "cctv-gdpr",
+      "name": "CCTV and GDPR Compliance in Security",
+      "passMark": 8,
+      "current": 398,
+      "due": 21,
+      "expired": 13,
+      "failed": 6,
+      "notTaken": 59
+    },
+    {
+      "id": "conflict",
+      "name": "Conflict Management",
+      "passMark": 8,
+      "current": 421,
+      "due": 14,
+      "expired": 5,
+      "failed": 3,
+      "notTaken": 54
+    },
+    {
+      "id": "filming",
+      "name": "Unexpected Filming by Visitors",
+      "passMark": 5,
+      "current": 407,
+      "due": 17,
+      "expired": 9,
+      "failed": 2,
+      "notTaken": 62
+    },
+    {
+      "id": "id-ooh",
+      "name": "ID Checks, Out of Hours Visitors & Social Engineering",
+      "passMark": 8,
+      "current": 395,
+      "due": 20,
+      "expired": 12,
+      "failed": 5,
+      "notTaken": 65
+    },
+    {
+      "id": "incident",
+      "name": "Static Security Incident Reporting Training",
+      "passMark": 5,
+      "current": 418,
+      "due": 11,
+      "expired": 8,
+      "failed": 3,
+      "notTaken": 57
+    },
+    {
+      "id": "hs",
+      "name": "Health & Safety for Security Officers",
+      "passMark": 5,
+      "current": 430,
+      "due": 9,
+      "expired": 4,
+      "failed": 1,
+      "notTaken": 53
+    }
+  ],
+  "officers": [
+    {
+      "staffId": "54311",
+      "fullName": "Aaron Singh",
+      "courses": [
+        {
+          "courseId": "ethics",
+          "lastAttempt": "2026-05-31T13:59:05+01:00",
+          "lastScore": 6,
+          "lastPass": "2026-05-31T13:59:05+01:00",
+          "status": "current"
+        },
+        {
+          "courseId": "cctv-gdpr",
+          "lastAttempt": "2026-04-12T10:00:00+01:00",
+          "lastScore": 10,
+          "lastPass": "2026-04-12T10:00:00+01:00",
+          "status": "current"
+        },
+        {
+          "courseId": "conflict",
+          "lastAttempt": "2026-03-11T10:00:00+00:00",
+          "lastScore": 9,
+          "lastPass": "2026-03-11T10:00:00+00:00",
+          "status": "current"
+        },
+        {
+          "courseId": "filming",
+          "lastAttempt": "2025-10-28T10:00:00+00:00",
+          "lastScore": 5,
+          "lastPass": "2025-10-28T10:00:00+00:00",
+          "status": "due"
+        },
+        {
+          "courseId": "id-ooh",
+          "lastAttempt": "2026-04-20T10:00:00+01:00",
+          "lastScore": 9,
+          "lastPass": "2026-04-20T10:00:00+01:00",
+          "status": "current"
+        },
+        {
+          "courseId": "incident",
+          "lastAttempt": "2025-09-01T10:00:00+01:00",
+          "lastScore": 5,
+          "lastPass": "2025-09-01T10:00:00+01:00",
+          "status": "expired"
+        },
+        {
+          "courseId": "hs",
+          "lastAttempt": "2026-06-02T10:00:00+01:00",
+          "lastScore": 5,
+          "lastPass": "2026-06-02T10:00:00+01:00",
+          "status": "current"
+        }
+      ]
+    }
+  ],
+  "actions": [
+    {
+      "name": "Maria Lopez",
+      "staffId": "48721",
+      "issue": "Training expired",
+      "coursesAffected": 2,
+      "nextAction": "Reassessment required",
+      "status": "expired"
+    },
+    {
+      "name": "David Carter",
+      "staffId": "51208",
+      "issue": "Assessment failed",
+      "coursesAffected": 1,
+      "nextAction": "Retake required",
+      "status": "failed"
+    },
+    {
+      "name": "Sarah Malik",
+      "staffId": "49876",
+      "issue": "Training not taken",
+      "coursesAffected": 3,
+      "nextAction": "Complete induction",
+      "status": "not-taken"
+    },
+    {
+      "name": "James O'Connor",
+      "staffId": "47132",
+      "issue": "Training expired",
+      "coursesAffected": 1,
+      "nextAction": "Reassessment required",
+      "status": "expired"
+    },
+    {
+      "name": "Chloe Bennett",
+      "staffId": "50611",
+      "issue": "Training not taken",
+      "coursesAffected": 2,
+      "nextAction": "Complete induction",
+      "status": "not-taken"
+    }
+  ]
+}
