@@ -488,7 +488,10 @@ async function loadData(){
   try{
     const apiUrl=String(window.SECURIT_TRAINING_API_URL || "").trim();
     if(!apiUrl) throw new Error("API URL is not configured in config.js");
-    const response=await fetch(apiUrl,{cache:"no-store"});
+    const response=await fetch(apiUrl,{
+      method:"POST",
+      cache:"no-store"
+    });
     if(!response.ok) throw new Error(`API returned HTTP ${response.status}`);
     const payload=await response.json();
 
