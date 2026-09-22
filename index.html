@@ -113,6 +113,59 @@
     </main>
   </div>
 
+
+  <div class="certificate-modal" id="certificateModal" aria-hidden="true">
+    <div class="certificate-toolbar no-print">
+      <button class="secondary-btn" id="closeCertificateBtn">Close</button>
+      <button class="primary-btn" id="printCertificateBtn">Print / Save as PDF</button>
+    </div>
+    <div class="certificate-sheet" id="certificateSheet">
+      <div class="certificate-border">
+        <div class="certificate-brand">
+          <div class="certificate-logo">S</div>
+          <div>
+            <div class="certificate-brand-title">SecurTrain</div>
+            <div class="certificate-brand-sub">People. Training. Safer Sites.</div>
+          </div>
+        </div>
+
+        <div class="certificate-kicker">Certificate of Completion</div>
+        <h1>Induction Training Certificate</h1>
+
+        <p class="certificate-intro">This certifies that</p>
+        <div class="certificate-name" id="certOfficerName">Officer Name</div>
+        <div class="certificate-staffid">Staff ID: <span id="certStaffId">—</span></div>
+
+        <p class="certificate-copy">
+          has successfully completed all required induction training assessments
+          and is recorded as current within the Training Compliance Register.
+        </p>
+
+        <div class="certificate-modules" id="certModules"></div>
+
+        <div class="certificate-summary">
+          <div>
+            <span>Certificate issued</span>
+            <strong id="certIssueDate">—</strong>
+          </div>
+          <div>
+            <span>Valid until</span>
+            <strong id="certValidUntil">—</strong>
+          </div>
+          <div>
+            <span>Certificate reference</span>
+            <strong id="certReference">—</strong>
+          </div>
+        </div>
+
+        <div class="certificate-footer">
+          Generated from the live SecurTrain Training Compliance Register.
+          This certificate is valid only while all listed induction assessments remain current.
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="app.js"></script>
 </body>
 </html>

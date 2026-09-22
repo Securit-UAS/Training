@@ -9,7 +9,7 @@ Static GitHub Pages front-end for the Induction Training Compliance project.
 - Action Required panel
 - Officer search by Staff ID
 - Sample officer record
-- Responsive  layout
+- Responsive layout
 - `data.json` contract ready for Power Automate-generated data
 
 ## Files
@@ -36,3 +36,15 @@ Microsoft Forms Excel tables -> Power Automate -> normalised compliance dataset 
 - Not Taken: active Staff ID has no valid assessment record
 
 The sample data is illustrative only.
+
+
+## Certificate generation
+Officer Search now includes a Generate Certificate button.
+
+Rules:
+- Button is enabled only when all seven induction modules are `Current`.
+- Certificate shows officer name and Staff ID from the live staffing dataset.
+- Each module shows its latest pass date.
+- Valid-until date is the earliest 12-month expiry across the seven current passes.
+- Certificate reference format: `IND-<StaffID>-YYYYMMDD`.
+- Print view is A4 landscape and can be printed directly or saved as PDF from the browser.

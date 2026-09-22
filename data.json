@@ -101,10 +101,10 @@
         },
         {
           "courseId": "filming",
-          "lastAttempt": "2025-10-28T10:00:00+00:00",
+          "lastAttempt": "2026-01-28T10:00:00+00:00",
           "lastScore": 5,
-          "lastPass": "2025-10-28T10:00:00+00:00",
-          "status": "due"
+          "lastPass": "2026-01-28T10:00:00+00:00",
+          "status": "current"
         },
         {
           "courseId": "id-ooh",
@@ -115,10 +115,10 @@
         },
         {
           "courseId": "incident",
-          "lastAttempt": "2025-09-01T10:00:00+01:00",
+          "lastAttempt": "2026-02-01T10:00:00+00:00",
           "lastScore": 5,
-          "lastPass": "2025-09-01T10:00:00+01:00",
-          "status": "expired"
+          "lastPass": "2026-02-01T10:00:00+00:00",
+          "status": "current"
         },
         {
           "courseId": "hs",
