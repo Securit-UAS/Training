@@ -1,34 +1,62 @@
-# Secur-IT Training Compliance Dashboard V3
+# Securit Training Compliance — Live
 
-Files:
-- index.html — complete GitHub Pages dashboard
-- data.json — current API payload, included only for local/GitHub testing
+This is the live-data GitHub Pages build.
 
-## Testing
-Upload both files to the GitHub Pages folder/repository and leave:
+## Files
+- `index.html` — dashboard and certificate
+- `config.js` — live Power Automate API endpoint
+- `securit-logo.png` — supplied Securit logo
 
-    const API_URL = "";
+## Before upload
+Put the NEW/production Power Automate endpoint in `config.js`:
 
-The page will load `./data.json`.
+```js
+window.SECURIT_TRAINING_API_URL = "YOUR_NEW_FLOW_URL";
+```
 
-## Live API
-When the production Power Automate endpoint/authentication is ready, set `API_URL`
-in index.html to the live endpoint or replace the fetch logic with the final MSAL/Entra call.
+Do not reuse or publish the previously exposed signed test URL.
 
-Do not commit a SAS-signed Power Automate test URL to a public GitHub repository.
+## API shape expected
+```json
+{
+  "staff": [
+    {
+      "staffId": "54311",
+      "fullName": "Aaron Singh",
+      "Contractor": "Adelar",
+      "siteName": "Glencar JLR Wolverhampton",
+      "created": "2026-09-22T05:04:03Z"
+    }
+  ],
+  "sites": [
+    {
+      "siteName": "Glencar JLR Wolverhampton",
+      "managerEmail": "example@securit.email",
+      "siteId": "123",
+      "active": "Yes"
+    }
+  ],
+  "ethics": [],
+  "unexpected-filming": [],
+  "id-ooh-social": [],
+  "incident-reporting": [],
+  "health-safety": [],
+  "checkpoint-welfare": []
+}
+```
 
 ## Logic
-- Active staff comes from `staff`
-- Duplicate staff IDs are deduplicated client-side
-- Course history is not deduplicated
-- Latest attempt wins
-- Failed latest attempt = Failed
-- Passed latest attempt:
-  - under 11 calendar months = Current
-  - 11 to under 12 calendar months = Reassessment Due
-  - 12+ calendar months = Expired
-- No attempt = Not Taken
-- Green = 6/6 Current
-- Amber = no Failed/Expired/Not Taken, with one or more Reassessment Due
-- Red = any Failed/Expired/Not Taken
-- Certificate available only for Green / 6 of 6 Current
+- Staff duplicates are resolved by `staffId`.
+- Newest `created` record wins.
+- Exact-normalised `siteName` is matched against the CMS site array.
+- `managerEmail` supplies the responsible Operations Manager.
+- Latest training attempt wins for each module.
+- Current: under 11 calendar months after latest passed attempt.
+- Reassessment Due: 11 to under 12 calendar months.
+- Expired: 12+ calendar months.
+- Latest failed attempt: Failed.
+- No attempt: Not Taken.
+- Green: all 6 Current.
+- Amber: Current/Due only, with at least one Due.
+- Red: any Failed, Expired or Not Taken.
+- Certificate enabled only for Green / 6 of 6 Current.
