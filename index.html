@@ -639,7 +639,7 @@ function showApp(){
   el("authGate").classList.add("hidden");
 }
 async function postJson(url,body){
-  const response=await fetch(url,{method:"POST",cache:"no-store",body:JSON.stringify(body)});
+  const response=await fetch(url,{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
   let data={};
   try{ data=await response.json(); }catch(e){}
   return {response,data};

@@ -23,3 +23,8 @@ No PIN is embedded in this package. The browser stores only the email address an
 
 ## V7.1
 Auth fetches no longer set an explicit application/json Content-Type header, avoiding CORS preflight against Power Automate HTTP triggers during testing.
+
+
+## V7.2
+Restored the original auth POST request behaviour with `Content-Type: application/json`.
+Keep the revised Power Automate Get Salt flow that removes the failing SharePoint OData filter.
