@@ -1,23 +1,16 @@
-# Securit Guarding Training Compliance Dashboard — V7.4
+# Securit Guarding Training Compliance – V7.5
 
-GitHub Pages upload package.
+GitHub-ready build.
 
-## Files
-- `index.html` — dashboard, auth UI, filters, WhatsApp links, certificate generation and print/share features
-- `config.js` — Power Automate endpoint configuration
-- `securit-logo.png` — Securit logo
-- `signature-jpbw.png` — certificate sign-off signature image
+## V7.5 changes
+- Removed the certificate seal.
+- Simplified certificate wording.
+- Reworked module/date alignment and footer spacing.
+- Restored visible J.P. Bewsey-Wilkinson signature block.
+- Sign-off title: Technical Development & Business Intelligence.
+- Retains single-page A4 landscape printing.
+- Retains WhatsApp training-link and certificate-sharing controls.
+- Loading overlay retuned for an expected ~30 second data load.
+- Expanded loading states with a mix of plausible system messages and subtle Red Dwarf-style humour.
 
-## Current features
-- Login with email + PIN through Power Automate auth flows
-- Forced PIN change on first login
-- Session validation and browser session persistence
-- Dynamic RAG / provider / search filters and counters
-- WhatsApp training links for modules requiring action
-- Single-page A4 landscape certificate printing
-- Certificate image sharing workflow for WhatsApp-compatible devices/browsers
-- Animated loading screen and progress counter
-- Certificate signed by J.P. Bewsey-Wilkinson — Technical Development & Business Intelligence
-
-## Important production note
-The current Power Automate trigger URLs in `config.js` are test endpoints. Rotate/harden them before production deployment.
+Upload the contents of this folder to the GitHub Pages site root, keeping filenames unchanged.
