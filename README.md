@@ -13,3 +13,8 @@ Files:
 - config.js
 - securit-logo.png
 - signature-jpbw.png
+
+## V7.7
+- Signature PNG now has a transparent background and tighter crop.
+- WhatsApp training reminder copy simplified.
+- Course titles ending in "Training" are normalised to prevent "training training".
