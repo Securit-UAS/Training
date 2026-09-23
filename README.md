@@ -1,16 +1,15 @@
-# Securit Guarding Training Compliance – V7.5
+# Securit Guarding Training Compliance — V7.6
 
-GitHub-ready build.
+GitHub-ready static build.
 
-## V7.5 changes
-- Removed the certificate seal.
-- Simplified certificate wording.
-- Reworked module/date alignment and footer spacing.
-- Restored visible J.P. Bewsey-Wilkinson signature block.
-- Sign-off title: Technical Development & Business Intelligence.
-- Retains single-page A4 landscape printing.
-- Retains WhatsApp training-link and certificate-sharing controls.
-- Loading overlay retuned for an expected ~30 second data load.
-- Expanded loading states with a mix of plausible system messages and subtle Red Dwarf-style humour.
+Changes in V7.6:
+- Removed the certificate explanatory note box.
+- Tightened the certificate vertically and moved the content upward.
+- Kept the signature block visible above the footer.
+- Training WhatsApp messages now place the full HTTPS training URL on its own line so WhatsApp can recognise it as a clickable link after the message is sent.
 
-Upload the contents of this folder to the GitHub Pages site root, keeping filenames unchanged.
+Files:
+- index.html
+- config.js
+- securit-logo.png
+- signature-jpbw.png
