@@ -19,3 +19,7 @@
 This V7 build authenticates and gates the web interface, but the existing training-data Power Automate endpoint is still a signed public test endpoint and does not yet validate the session token. Anyone who obtains that endpoint URL could call it directly. Before production, add server-side session validation to the training-data flow (or proxy it through an authenticated flow), and rotate all temporary signed URLs.
 
 No PIN is embedded in this package. The browser stores only the email address and temporary session token in localStorage.
+
+
+## V7.1
+Auth fetches no longer set an explicit application/json Content-Type header, avoiding CORS preflight against Power Automate HTTP triggers during testing.
