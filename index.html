@@ -126,6 +126,31 @@
       .stats{grid-template-columns:repeat(2,1fr)}
       .modulegrid,.meta-grid{grid-template-columns:1fr}
     }
+    .auth-gate{position:fixed;inset:0;z-index:9999;background:linear-gradient(145deg,#eef2f7,#f8fafc);display:flex;align-items:center;justify-content:center;padding:22px}
+    .auth-card{width:min(460px,100%);background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 70px rgba(31,45,61,.16);padding:28px}
+    .auth-logo{height:58px;width:auto;display:block;margin-bottom:22px}
+    .auth-card h2{margin:4px 0 8px;font-size:1.65rem;letter-spacing:-.03em}
+    .auth-card p{margin:0 0 20px;color:var(--muted);line-height:1.5}
+    .auth-field{margin-top:14px}
+    .auth-field label{display:block;margin-bottom:6px;font-size:.73rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800}
+    .auth-field input{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px 13px;outline:none;background:#fff;color:var(--text)}
+    .auth-field input:focus{border-color:#6d80bc;box-shadow:0 0 0 3px rgba(36,55,122,.08)}
+    .auth-actions{display:flex;gap:8px;align-items:center;margin-top:20px}
+    .auth-actions .btn{flex:1}
+    .auth-message{min-height:20px;margin-top:13px!important;font-size:.86rem}
+    .auth-message.error{color:var(--danger)}
+    .auth-message.ok{color:var(--green)}
+    .userbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .userbar .who{font-size:.82rem;color:var(--muted);text-align:right}
+    .userbar .who strong{display:block;color:var(--text)}
+    .logoutbtn{padding:8px 10px}
+    .module.attention{border-color:#efc1c1;background:#fffafa}
+    .module.due-attention{border-color:#f0d798;background:#fffdf7}
+    .module-action{margin-top:12px;padding-top:11px;border-top:1px solid var(--line)}
+    .wa-btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;background:#177b52;color:#fff;border-radius:9px;padding:9px 11px;font-weight:800;font-size:.78rem}
+    .wa-btn:hover{filter:brightness(.96)}
+    .wa-btn.disabled{opacity:.45;pointer-events:none}
+    .action-note{display:block;color:var(--muted);font-size:.69rem;margin-top:6px}
     @media(max-width:640px){
       .shell{padding:13px}
       .topbar{align-items:flex-start;flex-direction:column}
@@ -136,15 +161,42 @@
       .brand img{height:48px}
     }
     @media print{
-      body *{visibility:hidden}
-      #certificate,#certificate *{visibility:visible}
-      #certificate{display:block!important;position:absolute;left:0;top:0;width:100%;min-height:100%;padding:10mm}
+      html,body{width:297mm;height:210mm;margin:0!important;padding:0!important;background:#fff!important;overflow:hidden!important}
+      .shell,dialog,.auth-gate{display:none!important}
+      #certificate{display:block!important;position:static!important;width:297mm;height:210mm;min-height:0!important;margin:0!important;padding:10mm!important;overflow:hidden!important;break-after:avoid-page;page-break-after:avoid}
+      #certificate .cert-inner{height:190mm;min-height:0!important}
       @page{size:A4 landscape;margin:0}
     }
   </style>
 </head>
 <body>
-<div class="shell">
+<div class="auth-gate" id="authGate">
+  <section class="auth-card" id="loginPanel">
+    <img src="securit-logo.png" alt="Securit" class="auth-logo">
+    <span class="eyebrow">Secure access</span>
+    <h2>Training Compliance Login</h2>
+    <p>Enter your authorised email address and PIN to access the live Securit training register.</p>
+    <form id="loginForm">
+      <div class="auth-field"><label for="loginEmail">Email address</label><input id="loginEmail" type="email" autocomplete="username" required></div>
+      <div class="auth-field"><label for="loginPin">PIN</label><input id="loginPin" type="password" inputmode="numeric" autocomplete="current-password" required></div>
+      <div class="auth-actions"><button class="btn primary" id="loginBtn" type="submit">Sign in</button></div>
+      <p class="auth-message" id="loginMessage"></p>
+    </form>
+  </section>
+  <section class="auth-card hidden" id="changePinPanel">
+    <img src="securit-logo.png" alt="Securit" class="auth-logo">
+    <span class="eyebrow">First login</span>
+    <h2>Choose a new PIN</h2>
+    <p>Your temporary PIN must be changed before the dashboard can be opened.</p>
+    <form id="changePinForm">
+      <div class="auth-field"><label for="newPin">New PIN</label><input id="newPin" type="password" inputmode="numeric" autocomplete="new-password" minlength="4" required></div>
+      <div class="auth-field"><label for="confirmPin">Confirm new PIN</label><input id="confirmPin" type="password" inputmode="numeric" autocomplete="new-password" minlength="4" required></div>
+      <div class="auth-actions"><button class="btn primary" id="changePinBtn" type="submit">Update PIN</button></div>
+      <p class="auth-message" id="changePinMessage"></p>
+    </form>
+  </section>
+</div>
+<div class="shell" id="appShell">
   <header class="topbar">
     <div class="brand">
       <img src="securit-logo.png" alt="Securit">
@@ -153,7 +205,11 @@
         <p>Securit live training register</p>
       </div>
     </div>
-    <div class="sync"><span class="sync-dot" id="syncDot"></span><span id="syncText">Loading live register…</span></div>
+    <div class="userbar">
+      <div class="who"><strong id="signedInName">Signed in</strong><span id="signedInEmail"></span></div>
+      <button class="btn secondary logoutbtn" id="logoutBtn" type="button">Sign out</button>
+      <div class="sync"><span class="sync-dot" id="syncDot"></span><span id="syncText">Waiting for authentication…</span></div>
+    </div>
   </header>
 
   <section class="hero">
@@ -273,12 +329,12 @@
 <script src="config.js"></script>
 <script>
 const COURSE_DEFS = [
-  { key:"ethics", title:"Ethics & Compliance" },
-  { key:"unexpected-filming", title:"Unexpected Filming by Visitors" },
-  { key:"id-ooh-social", title:"ID Checks, Out of Hours Visitors & Social Engineering" },
-  { key:"incident-reporting", title:"Static Security Incident Reporting" },
-  { key:"health-safety", title:"Health & Safety for Security Officers" },
-  { key:"checkpoint-welfare", title:"Check Point & Welfare Training" }
+  { key:"ethics", title:"Ethics & Compliance Knowledge", link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dUMkcwQlJZS1dEV0NJMEo5UUxKRDZNQVUzMC4u" },
+  { key:"unexpected-filming", title:"Unexpected Filming by Visitors", link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dUQlpXV04wWjJXREVaR0xMTTRXT0c4U1BGOC4u" },
+  { key:"id-ooh-social", title:"ID Checks, Out of Hours Visitors & Social Engineering", link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dUNUczT1dPSVNQRDFOS1VGMVYzT0FLVDJHMy4u" },
+  { key:"incident-reporting", title:"Static Security Incident Reporting Training", link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dURjUyVjM1VjZaMzNJTVQ0REJLR1pGTjJETS4u" },
+  { key:"health-safety", title:"Health & Safety for Security Officers", link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dUQkhNWTM4M0JUUVpCVUJIMzM3OTBBUElQOC4u" },
+  { key:"checkpoint-welfare", title:"Check Point & Welfare Training", link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dUNUZDUVIyOUxGTEhDWFA2Skg4NEpLMlZBQS4u" }
 ];
 
 const MANAGER_NAMES = {
@@ -294,6 +350,8 @@ let officers = [];
 let activeFilter = "all";
 let activeProvider = "all";
 let selectedOfficer = null;
+let authState = { email:"", token:"", displayName:"" };
+const AUTH_STORAGE_KEY = "securitTrainingAuthV1";
 
 const el = id => document.getElementById(id);
 
@@ -374,6 +432,7 @@ function selectLatestStaffRows(staff){
       fullName:normaliseSpace(person.fullName) || `Staff ${id}`,
       contractor:normaliseSpace(person.Contractor),
       siteName:normaliseSpace(person.siteName),
+      phone:normaliseSpace(person.phone),
       created:person.created || person.Created || ""
     };
     const existing=unique.get(id);
@@ -471,6 +530,26 @@ function renderStats(list = filteredOfficers()){
   el("statRed").textContent=red.toLocaleString("en-GB");
   el("statRate").textContent=total ? `${Math.round((green/total)*100)}%` : "0%";
 }
+function normaliseWhatsAppNumber(value){
+  let n=String(value || "").replace(/[^0-9+]/g,"");
+  if(n.startsWith("+")) n=n.slice(1);
+  if(n.startsWith("00")) n=n.slice(2);
+  if(n.startsWith("0")) n="44"+n.slice(1);
+  return /^\d{10,15}$/.test(n) ? n : "";
+}
+function firstName(fullName){
+  return normaliseSpace(fullName).split(" ")[0] || "there";
+}
+function whatsAppUrl(officer,course,status){
+  const number=normaliseWhatsAppNumber(officer.phone);
+  if(!number) return "";
+  const message=`Hi ${firstName(officer.fullName)},\n\nYour Securit ${course.title} training requires attention (${status.label}). Please complete the module using the link below:\n\n${course.link}\n\nThank you.`;
+  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+}
+function needsTrainingContact(status){
+  return ["due","expired","failed","not-taken"].includes(status.code);
+}
+
 function openOfficer(staffId){
   const o=officers.find(x=>x.staffId===String(staffId));
   if(!o) return;
@@ -485,7 +564,16 @@ function openOfficer(staffId){
     const detail=!s.attempt
       ? "No recorded attempt."
       : `Latest attempt: ${formatDateUK(s.date)} · Score ${s.attempt.score} · ${s.attempt.pass ? "Pass" : "Fail"}${s.expiry ? ` · Expires ${formatDateUK(s.expiry)}` : ""}`;
-    return `<article class="module"><div class="moduletop"><h4>${escapeHtml(c.title)}</h4>${badge(s)}</div><p>${escapeHtml(detail)}</p></article>`;
+    const contact=needsTrainingContact(s);
+    const wa=contact ? whatsAppUrl(o,c,s) : "";
+    const action=contact
+      ? `<div class="module-action">${wa
+          ? `<a class="wa-btn" href="${escapeHtml(wa)}" target="_blank" rel="noopener noreferrer">Send training link via WhatsApp</a><span class="action-note">Opens WhatsApp on mobile or WhatsApp Web / desktop handling where available.</span>`
+          : `<span class="wa-btn disabled">WhatsApp unavailable</span><span class="action-note">No valid mobile number is recorded for this officer.</span>`}
+        </div>`
+      : "";
+    const cls=s.code==="due" ? "module due-attention" : (contact ? "module attention" : "module");
+    return `<article class="${cls}"><div class="moduletop"><h4>${escapeHtml(c.title)}</h4>${badge(s)}</div><p>${escapeHtml(detail)}</p>${action}</article>`;
   }).join("");
   const canCert=o.overall.code==="green";
   el("certificateBtn").disabled=!canCert;
@@ -506,6 +594,123 @@ function buildCertificate(o){
   el("certValid").textContent=`Valid until: ${formatDateUK(validUntil)}`;
   el("certGrid").innerHTML=rows.map(x=>`<div class="cert-row"><span>${escapeHtml(x.def.title)}</span><strong>${formatDateUK(x.status.date)}</strong></div>`).join("");
 }
+function boolValue(v){
+  return v===true || String(v).toLowerCase()==="true" || String(v).toLowerCase()==="yes";
+}
+function setAuthMessage(id,message,type=""){
+  const node=el(id);
+  node.textContent=message || "";
+  node.className=`auth-message${type ? " "+type : ""}`;
+}
+function saveAuth(){
+  localStorage.setItem(AUTH_STORAGE_KEY,JSON.stringify({email:authState.email,token:authState.token,displayName:authState.displayName}));
+}
+function clearAuth(){
+  authState={email:"",token:"",displayName:""};
+  localStorage.removeItem(AUTH_STORAGE_KEY);
+}
+function getStoredAuth(){
+  try{
+    const parsed=JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY) || "{}");
+    if(parsed.email && parsed.token) return parsed;
+  }catch(e){}
+  return null;
+}
+function showLogin(message=""){
+  el("authGate").classList.remove("hidden");
+  el("loginPanel").classList.remove("hidden");
+  el("changePinPanel").classList.add("hidden");
+  setAuthMessage("loginMessage",message,message ? "error" : "");
+  el("loginPin").value="";
+  setTimeout(()=>el("loginEmail").focus(),0);
+}
+function showChangePin(){
+  el("authGate").classList.remove("hidden");
+  el("loginPanel").classList.add("hidden");
+  el("changePinPanel").classList.remove("hidden");
+  el("newPin").value="";
+  el("confirmPin").value="";
+  setAuthMessage("changePinMessage","");
+  setTimeout(()=>el("newPin").focus(),0);
+}
+function showApp(){
+  el("signedInName").textContent=authState.displayName || "Signed in";
+  el("signedInEmail").textContent=authState.email;
+  el("authGate").classList.add("hidden");
+}
+async function postJson(url,body){
+  const response=await fetch(url,{method:"POST",headers:{"Content-Type":"application/json"},cache:"no-store",body:JSON.stringify(body)});
+  let data={};
+  try{ data=await response.json(); }catch(e){}
+  return {response,data};
+}
+function base64ToBytes(value){
+  const raw=atob(value);
+  return Uint8Array.from(raw,c=>c.charCodeAt(0));
+}
+function bytesToBase64(bytes){
+  let s="";
+  bytes.forEach(b=>s+=String.fromCharCode(b));
+  return btoa(s);
+}
+async function deriveVerifier(pin,saltBase64){
+  const material=await crypto.subtle.importKey("raw",new TextEncoder().encode(pin),"PBKDF2",false,["deriveBits"]);
+  const bits=await crypto.subtle.deriveBits({name:"PBKDF2",salt:base64ToBytes(saltBase64),iterations:210000,hash:"SHA-256"},material,256);
+  return bytesToBase64(new Uint8Array(bits));
+}
+function generateSalt(){
+  const bytes=new Uint8Array(16);
+  crypto.getRandomValues(bytes);
+  return bytesToBase64(bytes);
+}
+async function login(email,pin){
+  const auth=window.SECURIT_AUTH || {};
+  if(!auth.getSalt || !auth.login) throw new Error("Authentication endpoints are not configured.");
+  const saltResult=await postJson(auth.getSalt,{email});
+  if(!saltResult.data?.success || !saltResult.data?.salt) throw new Error("Invalid email or PIN.");
+  const verifier=await deriveVerifier(pin,saltResult.data.salt);
+  const loginResult=await postJson(auth.login,{email,verifier});
+  if(!loginResult.response.ok || !loginResult.data?.success) throw new Error(loginResult.data?.message || "Invalid email or PIN.");
+  authState={email,token:loginResult.data.token,displayName:loginResult.data.displayName || ""};
+  saveAuth();
+  if(boolValue(loginResult.data.mustChangePassword)){
+    showChangePin();
+    return false;
+  }
+  showApp();
+  await loadData();
+  return true;
+}
+async function changePin(newPin){
+  const auth=window.SECURIT_AUTH || {};
+  if(!auth.changePin) throw new Error("Change PIN endpoint is not configured.");
+  const newSalt=generateSalt();
+  const newVerifier=await deriveVerifier(newPin,newSalt);
+  const result=await postJson(auth.changePin,{email:authState.email,token:authState.token,newSalt,newVerifier});
+  if(!result.response.ok || !result.data?.success) throw new Error(result.data?.message || "PIN could not be updated.");
+  showApp();
+  await loadData();
+}
+async function validateStoredSession(){
+  const stored=getStoredAuth();
+  if(!stored){ showLogin(); return; }
+  authState={email:stored.email,token:stored.token,displayName:stored.displayName || ""};
+  const auth=window.SECURIT_AUTH || {};
+  if(!auth.validate){ clearAuth(); showLogin("Authentication is not configured."); return; }
+  try{
+    const result=await postJson(auth.validate,{email:authState.email,token:authState.token});
+    if(!result.response.ok || !result.data?.success) throw new Error("Session invalid or expired.");
+    authState.displayName=result.data.displayName || authState.displayName;
+    saveAuth();
+    if(boolValue(result.data.mustChangePassword)){ showChangePin(); return; }
+    showApp();
+    await loadData();
+  }catch(err){
+    clearAuth();
+    showLogin("Your session has expired. Please sign in again.");
+  }
+}
+
 async function loadData(){
   const dot=el("syncDot"), txt=el("syncText");
   try{
@@ -557,7 +762,35 @@ el("certificateBtn").addEventListener("click",()=>{
   buildCertificate(selectedOfficer);
   window.print();
 });
-loadData();
+el("loginForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  const email=normaliseSpace(el("loginEmail").value).toLowerCase();
+  const pin=el("loginPin").value;
+  if(!email || !pin) return;
+  el("loginBtn").disabled=true;
+  setAuthMessage("loginMessage","Signing in…");
+  try{ await login(email,pin); }
+  catch(err){ setAuthMessage("loginMessage",err.message || "Sign in failed.","error"); }
+  finally{ el("loginBtn").disabled=false; }
+});
+el("changePinForm").addEventListener("submit",async event=>{
+  event.preventDefault();
+  const pin=el("newPin").value;
+  const confirm=el("confirmPin").value;
+  if(pin.length<4){ setAuthMessage("changePinMessage","PIN must contain at least 4 characters.","error"); return; }
+  if(pin!==confirm){ setAuthMessage("changePinMessage","The PINs do not match.","error"); return; }
+  el("changePinBtn").disabled=true;
+  setAuthMessage("changePinMessage","Updating PIN…");
+  try{ await changePin(pin); }
+  catch(err){ setAuthMessage("changePinMessage",err.message || "PIN could not be updated.","error"); }
+  finally{ el("changePinBtn").disabled=false; }
+});
+el("logoutBtn").addEventListener("click",()=>{
+  clearAuth();
+  officers=[]; selectedOfficer=null;
+  showLogin();
+});
+validateStoredSession();
 </script>
 </body>
 </html>

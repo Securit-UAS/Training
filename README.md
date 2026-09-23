@@ -1,76 +1,21 @@
-# Securit Training Compliance — Live
+# Securit Guarding Training Compliance — V7 test build
 
-This is the live-data GitHub Pages build.
+## Included
+- Email + PIN login screen
+- PBKDF2-SHA256 verifier generation in the browser (210,000 iterations)
+- First-login forced PIN change
+- 12-hour session token persistence and validation
+- Sign-out control
+- Hidden officer mobile number support from `staff[].phone`
+- WhatsApp training links for Reassessment Due / Failed / Expired / Not Taken modules
+- Desktop/mobile WhatsApp deep-link handling via `wa.me`
+- Certificate print layout changed to a single A4 landscape page
+- Existing provider, RAG and search filters with dynamic stats retained
 
-## Files
-- `index.html` — dashboard and certificate
-- `config.js` — live Power Automate API endpoint
-- `securit-logo.png` — supplied Securit logo
+## Required API data
+`Normalise Staff` must include `phone` mapped from the Rolling Staff DB `LastName` field.
 
-## Before upload
-Put the NEW/production Power Automate endpoint in `config.js`:
+## IMPORTANT SECURITY NOTE
+This V7 build authenticates and gates the web interface, but the existing training-data Power Automate endpoint is still a signed public test endpoint and does not yet validate the session token. Anyone who obtains that endpoint URL could call it directly. Before production, add server-side session validation to the training-data flow (or proxy it through an authenticated flow), and rotate all temporary signed URLs.
 
-```js
-window.SECURIT_TRAINING_API_URL = "YOUR_NEW_FLOW_URL";
-```
-
-Do not reuse or publish the previously exposed signed test URL.
-
-## API shape expected
-```json
-{
-  "staff": [
-    {
-      "staffId": "54311",
-      "fullName": "Aaron Singh",
-      "Contractor": "Adelar",
-      "siteName": "Glencar JLR Wolverhampton",
-      "created": "2026-09-22T05:04:03Z"
-    }
-  ],
-  "sites": [
-    {
-      "siteName": "Glencar JLR Wolverhampton",
-      "managerEmail": "example@securit.email",
-      "siteId": "123",
-      "active": "Yes"
-    }
-  ],
-  "ethics": [],
-  "unexpected-filming": [],
-  "id-ooh-social": [],
-  "incident-reporting": [],
-  "health-safety": [],
-  "checkpoint-welfare": []
-}
-```
-
-## Logic
-- Staff duplicates are resolved by `staffId`.
-- Newest `created` record wins.
-- Exact-normalised `siteName` is matched against the CMS site array.
-- `managerEmail` supplies the responsible Operations Manager.
-- Latest training attempt wins for each module.
-- Current: under 11 calendar months after latest passed attempt.
-- Reassessment Due: 11 to under 12 calendar months.
-- Expired: 12+ calendar months.
-- Latest failed attempt: Failed.
-- No attempt: Not Taken.
-- Green: all 6 Current.
-- Amber: Current/Due only, with at least one Due.
-- Red: any Failed, Expired or Not Taken.
-- Certificate enabled only for Green / 6 of 6 Current.
-
-
-## V5 interface changes
-- Page title: `Guarding Training Compliance`
-- Main heading: `Securit Guarding Induction & Core Training`
-- Ops Manager email hidden from table and officer detail view
-- Company / labour provider dropdown generated dynamically from live `Contractor` values
-- Search still supports officer name, Staff ID, site and manager name
-
-
-## V6
-Dashboard summary cards are now dynamic. Active Staff, Green, Amber, Red and Compliance
-recalculate against the currently visible result set after RAG filters, provider dropdown
-selection and text search are applied.
+No PIN is embedded in this package. The browser stores only the email address and temporary session token in localStorage.
