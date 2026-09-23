@@ -1,30 +1,23 @@
-# Securit Guarding Training Compliance — V7 test build
+# Securit Guarding Training Compliance Dashboard — V7.4
 
-## Included
-- Email + PIN login screen
-- PBKDF2-SHA256 verifier generation in the browser (210,000 iterations)
-- First-login forced PIN change
-- 12-hour session token persistence and validation
-- Sign-out control
-- Hidden officer mobile number support from `staff[].phone`
-- WhatsApp training links for Reassessment Due / Failed / Expired / Not Taken modules
-- Desktop/mobile WhatsApp deep-link handling via `wa.me`
-- Certificate print layout changed to a single A4 landscape page
-- Existing provider, RAG and search filters with dynamic stats retained
+GitHub Pages upload package.
 
-## Required API data
-`Normalise Staff` must include `phone` mapped from the Rolling Staff DB `LastName` field.
+## Files
+- `index.html` — dashboard, auth UI, filters, WhatsApp links, certificate generation and print/share features
+- `config.js` — Power Automate endpoint configuration
+- `securit-logo.png` — Securit logo
+- `signature-jpbw.png` — certificate sign-off signature image
 
-## IMPORTANT SECURITY NOTE
-This V7 build authenticates and gates the web interface, but the existing training-data Power Automate endpoint is still a signed public test endpoint and does not yet validate the session token. Anyone who obtains that endpoint URL could call it directly. Before production, add server-side session validation to the training-data flow (or proxy it through an authenticated flow), and rotate all temporary signed URLs.
+## Current features
+- Login with email + PIN through Power Automate auth flows
+- Forced PIN change on first login
+- Session validation and browser session persistence
+- Dynamic RAG / provider / search filters and counters
+- WhatsApp training links for modules requiring action
+- Single-page A4 landscape certificate printing
+- Certificate image sharing workflow for WhatsApp-compatible devices/browsers
+- Animated loading screen and progress counter
+- Certificate signed by J.P. Bewsey-Wilkinson — Technical Development & Business Intelligence
 
-No PIN is embedded in this package. The browser stores only the email address and temporary session token in localStorage.
-
-
-## V7.1
-Auth fetches no longer set an explicit application/json Content-Type header, avoiding CORS preflight against Power Automate HTTP triggers during testing.
-
-
-## V7.2
-Restored the original auth POST request behaviour with `Content-Type: application/json`.
-Keep the revised Power Automate Get Salt flow that removes the failing SharePoint OData filter.
+## Important production note
+The current Power Automate trigger URLs in `config.js` are test endpoints. Rotate/harden them before production deployment.

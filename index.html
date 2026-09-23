@@ -7,789 +7,120 @@
   <title>Securit Guarding Training Compliance</title>
   <style>
     :root{
-      --bg:#f4f6f8;
-      --panel:#ffffff;
-      --panel2:#f8fafc;
-      --line:#d9e0e7;
-      --text:#1d2733;
-      --muted:#687687;
-      --navy:#24377a;
-      --red:#e53234;
-      --green:#18875a;
-      --amber:#b87900;
-      --danger:#c44343;
-      --blue:#2f6fab;
-      --shadow:0 8px 24px rgba(31,45,61,.08);
-      --radius:16px;
+      --bg:#f4f6f8;--panel:#ffffff;--panel2:#f8fafc;--line:#d9e0e7;--text:#1d2733;--muted:#687687;
+      --navy:#24377a;--red:#e53234;--green:#18875a;--amber:#b87900;--danger:#c44343;--blue:#2f6fab;--gold:#d1a13a;
+      --shadow:0 8px 24px rgba(31,45,61,.08);--radius:16px;
     }
-    *{box-sizing:border-box}
-    html,body{margin:0;background:#f4f6f8;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-    body{min-height:100vh}
-    button,input{font:inherit}
-    button{cursor:pointer}
+    *{box-sizing:border-box} html,body{margin:0;background:#f4f6f8;color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    body{min-height:100vh} button,input,select{font:inherit} button{cursor:pointer}
     .shell{max-width:1550px;margin:0 auto;padding:22px}
     .topbar{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:18px}
-    .brand{display:flex;align-items:center;gap:16px}
-    .brand img{height:56px;width:auto}
-    .brand h1{margin:0;font-size:1.65rem;letter-spacing:-.03em}
-    .brand p{margin:3px 0 0;color:var(--muted);font-size:.92rem}
-    .sync{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.88rem}
-    .sync-dot{width:9px;height:9px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px rgba(184,121,0,.10)}
-    .sync-dot.ok{background:var(--green);box-shadow:0 0 0 4px rgba(24,135,90,.11)}
-    .sync-dot.bad{background:var(--danger);box-shadow:0 0 0 4px rgba(196,67,67,.10)}
+    .brand{display:flex;align-items:center;gap:16px}.brand img{height:56px;width:auto}.brand h1{margin:0;font-size:1.65rem;letter-spacing:-.03em}.brand p{margin:3px 0 0;color:var(--muted);font-size:.92rem}
+    .sync{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:.88rem}.sync-dot{width:9px;height:9px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 4px rgba(184,121,0,.10)}.sync-dot.ok{background:var(--green);box-shadow:0 0 0 4px rgba(24,135,90,.11)}.sync-dot.bad{background:var(--danger);box-shadow:0 0 0 4px rgba(196,67,67,.10)}
     .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
-    .hero{display:grid;grid-template-columns:1.35fr .65fr;gap:14px;margin-bottom:14px}
-    .intro{padding:22px}
-    .eyebrow{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--navy)}
-    .intro h2{font-size:clamp(1.4rem,3vw,2.1rem);letter-spacing:-.035em;margin:7px 0 8px}
-    .intro p{margin:0;color:var(--muted);line-height:1.5;max-width:850px}
-    .legend{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
-    .pill{border-radius:999px;padding:5px 9px;font-size:.73rem;font-weight:800;border:1px solid transparent;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}
-    .pill.current,.pill.green{color:#12633f;background:#e9f6ef;border-color:#bfe5cf}
-    .pill.due,.pill.amber{color:#835a00;background:#fff5d8;border-color:#f0d798}
-    .pill.expired,.pill.failed,.pill.not-taken,.pill.red{color:#9b3232;background:#fff0f0;border-color:#efc1c1}
-    .searchbox{padding:20px;display:flex;flex-direction:column;justify-content:center}
-    .searchbox label{font-size:.75rem;text-transform:uppercase;letter-spacing:.10em;color:var(--muted);font-weight:800;margin-bottom:8px}
-    .searchrow{display:flex;gap:8px}
-    .searchrow input{flex:1;min-width:0;background:#fff;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px 13px;outline:none}
-    .searchrow input:focus{border-color:#6d80bc;box-shadow:0 0 0 3px rgba(36,55,122,.08)}
-    .btn{border:none;border-radius:10px;padding:10px 13px;font-weight:800}
-    .btn.primary{background:var(--navy);color:#fff}
-    .btn.secondary{background:#f3f6f8;color:var(--text);border:1px solid var(--line)}
-    .btn:disabled{opacity:.42;cursor:not-allowed}
-    .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:14px 0}
-    .stat{padding:16px}
-    .stat span{display:block;color:var(--muted);font-size:.73rem;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
-    .stat strong{display:block;font-size:1.85rem;letter-spacing:-.045em;margin-top:4px}
-    .stat small{color:var(--muted)}
-    .toolbar{display:flex;gap:10px;justify-content:space-between;align-items:center;padding:12px;margin-bottom:12px}
-    .filterset{display:flex;gap:7px;flex-wrap:wrap}
-    .filterbtn{background:#fff;border:1px solid var(--line);color:var(--muted);border-radius:9px;padding:8px 10px;font-weight:750}
-    .filterbtn.active{color:var(--navy);border-color:#8796c9;background:#f1f4ff}
-    .count{color:var(--muted);font-size:.88rem}
-    .provider-filter{display:flex;align-items:center;gap:8px;margin-left:auto}
-    .provider-filter label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:800;white-space:nowrap}
-    .provider-filter select{background:#fff;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:8px 10px;min-width:210px}
-
-    .tablewrap{overflow:auto;border-radius:var(--radius)}
-    table{border-collapse:separate;border-spacing:0;width:100%;min-width:1460px;background:#fff}
-    th,td{padding:11px 11px;border-bottom:1px solid var(--line);vertical-align:middle}
-    th{position:sticky;top:0;background:#f7f9fb;color:#647286;text-align:left;font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;z-index:2}
-    tbody tr:hover{background:#fafcff}
-    tbody tr:last-child td{border-bottom:none}
-    .person strong{display:block}
-    .person small,.sub{display:block;color:var(--muted);font-size:.72rem;margin-top:3px}
-    .sitecell{max-width:205px;font-size:.82rem}
-    .managercell{max-width:150px;font-size:.82rem}
-    .coursecell{font-size:.80rem}
-    .coursecell .score{display:block;color:var(--muted);font-size:.69rem;margin-top:3px}
-    .overall{font-weight:850}
-    .ragdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
-    .ragdot.green{background:var(--green)}
-    .ragdot.amber{background:var(--amber)}
-    .ragdot.red{background:var(--danger)}
-    .detailsbtn{white-space:nowrap}
-    .empty{padding:46px;text-align:center;color:var(--muted)}
-    .hidden{display:none!important}
-    dialog{width:min(1020px,calc(100vw - 30px));padding:0;border:none;border-radius:18px;background:#fff;color:var(--text);box-shadow:0 30px 100px rgba(0,0,0,.25)}
-    dialog::backdrop{background:rgba(20,31,46,.38);backdrop-filter:blur(2px)}
-    .modalhead{display:flex;justify-content:space-between;align-items:flex-start;padding:20px 22px;border-bottom:1px solid var(--line)}
-    .modalhead h3{margin:3px 0 0;font-size:1.45rem}
-    .closebtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:#f5f7f9;color:var(--text);font-size:1.15rem}
-    .modalbody{padding:22px}
-    .officerhero{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:16px}
-    .officerhero p{margin:4px 0;color:var(--muted)}
-    .meta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 18px}
-    .meta-card{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:12px}
-    .meta-card span{display:block;font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:800}
-    .meta-card strong{display:block;margin-top:4px;font-size:.92rem}
-    .modulegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}
-    .module{padding:14px;background:#fff;border:1px solid var(--line);border-radius:12px}
-    .moduletop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-    .module h4{margin:0;font-size:.92rem}
-    .module p{margin:7px 0 0;color:var(--muted);font-size:.79rem;line-height:1.4}
-    .modalactions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
-    .cert{display:none;background:white;color:#18202b;padding:34px;min-height:690px}
-    .cert-inner{border:3px solid var(--navy);padding:28px;min-height:610px;position:relative}
-    .cert-top{display:flex;justify-content:space-between;align-items:flex-start}
-    .cert-logo{height:60px;width:auto}
-    .cert h1{text-align:center;font-size:2.25rem;margin:38px 0 7px;color:var(--navy)}
-    .cert .lead{text-align:center;font-size:1rem;color:#485361}
-    .cert .name{text-align:center;font-size:1.9rem;font-weight:900;margin:17px 0 4px}
-    .cert .staffid{text-align:center;color:#5f6b7b}
-    .cert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px 18px;margin:28px auto 18px;max-width:850px}
-    .cert-row{display:flex;justify-content:space-between;border-bottom:1px solid #d8dee7;padding:7px 0;font-size:.86rem}
-    .cert-foot{display:flex;justify-content:space-between;gap:18px;position:absolute;left:28px;right:28px;bottom:23px;font-size:.76rem;color:#667281}
-    .cert-accent{height:6px;background:linear-gradient(90deg,var(--navy) 0 76%,var(--red) 76% 100%);margin:15px -28px 0}
-    @media(max-width:980px){
-      .hero{grid-template-columns:1fr}
-      .stats{grid-template-columns:repeat(2,1fr)}
-      .modulegrid,.meta-grid{grid-template-columns:1fr}
-    }
-    .auth-gate{position:fixed;inset:0;z-index:9999;background:linear-gradient(145deg,#eef2f7,#f8fafc);display:flex;align-items:center;justify-content:center;padding:22px}
-    .auth-card{width:min(460px,100%);background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 70px rgba(31,45,61,.16);padding:28px}
-    .auth-logo{height:58px;width:auto;display:block;margin-bottom:22px}
-    .auth-card h2{margin:4px 0 8px;font-size:1.65rem;letter-spacing:-.03em}
-    .auth-card p{margin:0 0 20px;color:var(--muted);line-height:1.5}
-    .auth-field{margin-top:14px}
-    .auth-field label{display:block;margin-bottom:6px;font-size:.73rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800}
-    .auth-field input{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px 13px;outline:none;background:#fff;color:var(--text)}
-    .auth-field input:focus{border-color:#6d80bc;box-shadow:0 0 0 3px rgba(36,55,122,.08)}
-    .auth-actions{display:flex;gap:8px;align-items:center;margin-top:20px}
-    .auth-actions .btn{flex:1}
-    .auth-message{min-height:20px;margin-top:13px!important;font-size:.86rem}
-    .auth-message.error{color:var(--danger)}
-    .auth-message.ok{color:var(--green)}
-    .userbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-    .userbar .who{font-size:.82rem;color:var(--muted);text-align:right}
-    .userbar .who strong{display:block;color:var(--text)}
-    .logoutbtn{padding:8px 10px}
-    .module.attention{border-color:#efc1c1;background:#fffafa}
-    .module.due-attention{border-color:#f0d798;background:#fffdf7}
-    .module-action{margin-top:12px;padding-top:11px;border-top:1px solid var(--line)}
-    .wa-btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;background:#177b52;color:#fff;border-radius:9px;padding:9px 11px;font-weight:800;font-size:.78rem}
-    .wa-btn:hover{filter:brightness(.96)}
-    .wa-btn.disabled{opacity:.45;pointer-events:none}
-    .action-note{display:block;color:var(--muted);font-size:.69rem;margin-top:6px}
-    @media(max-width:640px){
-      .shell{padding:13px}
-      .topbar{align-items:flex-start;flex-direction:column}
-      .stats{grid-template-columns:1fr 1fr}
-      .toolbar{align-items:flex-start;flex-direction:column}.provider-filter{margin-left:0;align-items:flex-start;flex-direction:column;width:100%}.provider-filter select{width:100%;min-width:0}
-      .searchrow{flex-direction:column}
-      .officerhero{align-items:flex-start;flex-direction:column}
-      .brand img{height:48px}
-    }
-    @media print{
-      html,body{width:297mm;height:210mm;margin:0!important;padding:0!important;background:#fff!important;overflow:hidden!important}
-      .shell,dialog,.auth-gate{display:none!important}
-      #certificate{display:block!important;position:static!important;width:297mm;height:210mm;min-height:0!important;margin:0!important;padding:10mm!important;overflow:hidden!important;break-after:avoid-page;page-break-after:avoid}
-      #certificate .cert-inner{height:190mm;min-height:0!important}
-      @page{size:A4 landscape;margin:0}
-    }
+    .hero{display:grid;grid-template-columns:1.35fr .65fr;gap:14px;margin-bottom:14px}.intro{padding:22px}.eyebrow{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;font-weight:800;color:var(--navy)}
+    .intro h2{font-size:clamp(1.4rem,3vw,2.1rem);letter-spacing:-.035em;margin:7px 0 8px}.intro p{margin:0;color:var(--muted);line-height:1.5;max-width:850px}.legend{display:flex;flex-wrap:wrap;gap:7px;margin-top:16px}
+    .pill{border-radius:999px;padding:5px 9px;font-size:.73rem;font-weight:800;border:1px solid transparent;display:inline-flex;align-items:center;gap:5px;white-space:nowrap}.pill.current,.pill.green{color:#12633f;background:#e9f6ef;border-color:#bfe5cf}.pill.due,.pill.amber{color:#835a00;background:#fff5d8;border-color:#f0d798}.pill.expired,.pill.failed,.pill.not-taken,.pill.red{color:#9b3232;background:#fff0f0;border-color:#efc1c1}
+    .searchbox{padding:20px;display:flex;flex-direction:column;justify-content:center}.searchbox label{font-size:.75rem;text-transform:uppercase;letter-spacing:.10em;color:var(--muted);font-weight:800;margin-bottom:8px}.searchrow{display:flex;gap:8px}.searchrow input{flex:1;min-width:0;background:#fff;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:12px 13px;outline:none}.searchrow input:focus{border-color:#6d80bc;box-shadow:0 0 0 3px rgba(36,55,122,.08)}
+    .btn{border:none;border-radius:10px;padding:10px 13px;font-weight:800}.btn.primary{background:var(--navy);color:#fff}.btn.secondary{background:#f3f6f8;color:var(--text);border:1px solid var(--line)}.btn:disabled{opacity:.42;cursor:not-allowed}
+    .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:14px 0}.stat{padding:16px}.stat span{display:block;color:var(--muted);font-size:.73rem;text-transform:uppercase;letter-spacing:.08em;font-weight:800}.stat strong{display:block;font-size:1.85rem;letter-spacing:-.045em;margin-top:4px}.stat small{color:var(--muted)}
+    .toolbar{display:flex;gap:10px;justify-content:space-between;align-items:center;padding:12px;margin-bottom:12px}.filterset{display:flex;gap:7px;flex-wrap:wrap}.filterbtn{background:#fff;border:1px solid var(--line);color:var(--muted);border-radius:9px;padding:8px 10px;font-weight:750}.filterbtn.active{color:var(--navy);border-color:#8796c9;background:#f1f4ff}.count{color:var(--muted);font-size:.88rem}.provider-filter{display:flex;align-items:center;gap:8px;margin-left:auto}.provider-filter label{font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:800;white-space:nowrap}.provider-filter select{background:#fff;color:var(--text);border:1px solid var(--line);border-radius:9px;padding:8px 10px;min-width:210px}
+    .tablewrap{overflow:auto;border-radius:var(--radius)} table{border-collapse:separate;border-spacing:0;width:100%;min-width:1460px;background:#fff} th,td{padding:11px 11px;border-bottom:1px solid var(--line);vertical-align:middle} th{position:sticky;top:0;background:#f7f9fb;color:#647286;text-align:left;font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;z-index:2} tbody tr:hover{background:#fafcff} tbody tr:last-child td{border-bottom:none}
+    .person strong{display:block}.person small,.sub{display:block;color:var(--muted);font-size:.72rem;margin-top:3px}.sitecell{max-width:205px;font-size:.82rem}.managercell{max-width:150px;font-size:.82rem}.coursecell{font-size:.80rem}.coursecell .score{display:block;color:var(--muted);font-size:.69rem;margin-top:3px}.overall{font-weight:850}.ragdot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}.ragdot.green{background:var(--green)}.ragdot.amber{background:var(--amber)}.ragdot.red{background:var(--danger)}.detailsbtn{white-space:nowrap}.empty{padding:46px;text-align:center;color:var(--muted)}.hidden{display:none!important}
+    dialog{width:min(1020px,calc(100vw - 30px));padding:0;border:none;border-radius:18px;background:#fff;color:var(--text);box-shadow:0 30px 100px rgba(0,0,0,.25)} dialog::backdrop{background:rgba(20,31,46,.38);backdrop-filter:blur(2px)} .modalhead{display:flex;justify-content:space-between;align-items:flex-start;padding:20px 22px;border-bottom:1px solid var(--line)} .modalhead h3{margin:3px 0 0;font-size:1.45rem} .closebtn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:#f5f7f9;color:var(--text);font-size:1.15rem} .modalbody{padding:22px} .officerhero{display:flex;justify-content:space-between;gap:18px;align-items:center;margin-bottom:16px}.officerhero p{margin:4px 0;color:var(--muted)} .meta-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0 18px}.meta-card{background:#f8fafc;border:1px solid var(--line);border-radius:12px;padding:12px}.meta-card span{display:block;font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.07em;font-weight:800}.meta-card strong{display:block;margin-top:4px;font-size:.92rem}.modulegrid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px}.module{padding:14px;background:#fff;border:1px solid var(--line);border-radius:12px}.moduletop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.module h4{margin:0;font-size:.92rem}.module p{margin:7px 0 0;color:var(--muted);font-size:.79rem;line-height:1.4}.modalactions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
+    .cert{display:none;background:#fff;color:#18202b;padding:34px;min-height:690px}.cert-inner{border:3px solid var(--navy);padding:0;min-height:610px;position:relative;overflow:hidden;background:linear-gradient(180deg,#ffffff 0%,#fbfcfe 100%)}.cert-watermark{position:absolute;inset:auto 28px 88px auto;font-size:6rem;font-weight:900;letter-spacing:.08em;color:rgba(36,55,122,.05);pointer-events:none;user-select:none}.cert-header{padding:24px 28px 14px;background:linear-gradient(135deg,rgba(36,55,122,.05),rgba(229,50,52,.04))}.cert-top{display:flex;justify-content:space-between;align-items:flex-start;gap:18px}.cert-logo{height:60px;width:auto}.cert-refbox{text-align:right;font-size:.8rem;color:#5d6880}.cert-refbox strong{display:block;color:var(--navy);font-size:.86rem}.cert-accent{height:7px;background:linear-gradient(90deg,var(--navy) 0 74%,var(--red) 74% 100%)}.cert-body{padding:26px 34px 22px;position:relative}.cert-kicker{text-align:center;font-size:.78rem;text-transform:uppercase;letter-spacing:.22em;font-weight:800;color:var(--gold)}.cert h1{text-align:center;font-size:2.5rem;line-height:1.1;letter-spacing:-.04em;margin:9px 0 6px;color:var(--navy)}.cert .lead{text-align:center;font-size:1.03rem;color:#485361;max-width:860px;margin:0 auto}.cert-award{margin-top:18px;text-align:center;color:#6a7284;font-size:.88rem;text-transform:uppercase;letter-spacing:.18em;font-weight:700}.cert .name{text-align:center;font-size:2.1rem;font-weight:900;margin:10px 0 6px;letter-spacing:-.03em}.cert .staffid{text-align:center;color:#5f6b7b}.cert-programme{text-align:center;margin:16px auto 0;max-width:850px;color:#364154;line-height:1.55;font-size:1rem}.cert-ribbon{margin:16px auto 20px;display:flex;justify-content:center}.cert-ribbon span{display:inline-flex;align-items:center;gap:8px;background:#eef3ff;color:var(--navy);border:1px solid #d2dcfb;border-radius:999px;padding:9px 16px;font-size:.84rem;font-weight:800}.cert-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px 18px;margin:0 auto 18px;max-width:850px}.cert-row{display:flex;justify-content:space-between;border-bottom:1px solid #d8dee7;padding:7px 0;font-size:.86rem}.cert-lower{display:grid;grid-template-columns:1.2fr .8fr;gap:22px;align-items:end;margin-top:12px}.cert-note{background:#fbfcff;border:1px solid #d8e0ef;border-radius:14px;padding:14px 16px;color:#556074;font-size:.84rem;line-height:1.55}.cert-signoff{text-align:center;border-top:1px solid #d8dee7;padding-top:8px}.cert-signature{display:block;margin:0 auto 4px;max-height:82px;max-width:100%;object-fit:contain}.cert-signer{font-size:.98rem;font-weight:800;color:#18202b}.cert-title{font-size:.8rem;color:#667281;margin-top:2px}.cert-foot{display:flex;justify-content:space-between;gap:18px;position:absolute;left:34px;right:34px;bottom:20px;font-size:.76rem;color:#667281}.cert-seal{position:absolute;right:34px;top:150px;width:118px;height:118px;border-radius:50%;border:4px solid rgba(209,161,58,.95);color:#87641b;background:radial-gradient(circle at 30% 30%,rgba(255,255,255,.95),rgba(255,244,214,.96) 55%,rgba(244,224,168,.98) 100%);display:flex;align-items:center;justify-content:center;text-align:center;font-size:.72rem;line-height:1.2;font-weight:800;box-shadow:0 10px 24px rgba(209,161,58,.18);transform:rotate(-10deg)}.cert-seal strong{display:block;font-size:.96rem;letter-spacing:.08em;margin-top:2px}
+    .auth-gate{position:fixed;inset:0;z-index:9999;background:linear-gradient(145deg,#eef2f7,#f8fafc);display:flex;align-items:center;justify-content:center;padding:22px}.auth-card{width:min(460px,100%);background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:0 24px 70px rgba(31,45,61,.16);padding:28px}.auth-logo{height:58px;width:auto;display:block;margin-bottom:22px}.auth-card h2{margin:4px 0 8px;font-size:1.65rem;letter-spacing:-.03em}.auth-card p{margin:0 0 20px;color:var(--muted);line-height:1.5}.auth-field{margin-top:14px}.auth-field label{display:block;margin-bottom:6px;font-size:.73rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:800}.auth-field input{width:100%;border:1px solid var(--line);border-radius:10px;padding:12px 13px;outline:none;background:#fff;color:var(--text)}.auth-field input:focus{border-color:#6d80bc;box-shadow:0 0 0 3px rgba(36,55,122,.08)}.auth-actions{display:flex;gap:8px;align-items:center;margin-top:20px}.auth-actions .btn{flex:1}.auth-message{min-height:20px;margin-top:13px!important;font-size:.86rem}.auth-message.error{color:var(--danger)}.auth-message.ok{color:var(--green)}.userbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}.userbar .who{font-size:.82rem;color:var(--muted);text-align:right}.userbar .who strong{display:block;color:var(--text)}.logoutbtn{padding:8px 10px}.module.attention{border-color:#efc1c1;background:#fffafa}.module.due-attention{border-color:#f0d798;background:#fffdf7}.module-action{margin-top:12px;padding-top:11px;border-top:1px solid var(--line)}.wa-btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;background:#177b52;color:#fff;border-radius:9px;padding:9px 11px;font-weight:800;font-size:.78rem}.wa-btn:hover{filter:brightness(.96)}.wa-btn.disabled{opacity:.45;pointer-events:none}.action-note{display:block;color:var(--muted);font-size:.69rem;margin-top:6px}
+    .loading-overlay{position:fixed;inset:0;z-index:9500;background:rgba(244,246,248,.94);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:22px;transition:opacity .25s ease, visibility .25s ease}.loading-overlay.hidden{opacity:0;visibility:hidden;pointer-events:none}.loading-card{width:min(460px,100%);background:#fff;border:1px solid var(--line);border-radius:22px;box-shadow:0 24px 70px rgba(31,45,61,.16);padding:28px 28px 24px;text-align:center}.loading-logo{height:56px;width:auto;margin:0 auto 14px;display:block}.loading-title{margin:0;font-size:1.5rem;letter-spacing:-.03em;color:var(--text)}.loading-copy{margin:8px 0 18px;color:var(--muted);line-height:1.5}.loading-progress{height:14px;background:#edf1f6;border-radius:999px;overflow:hidden;border:1px solid #dde4ed}.loading-bar{height:100%;width:0%;background:linear-gradient(90deg,var(--navy),#4b63bb,var(--red));border-radius:999px;transition:width .22s ease}.loading-meta{display:flex;justify-content:space-between;align-items:center;margin-top:10px;font-size:.88rem;color:#5f6b7b}.loading-percent{font-weight:900;color:var(--navy);font-size:1rem}
+    @media(max-width:980px){.hero{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.modulegrid,.meta-grid,.cert-lower{grid-template-columns:1fr}} @media(max-width:640px){.shell{padding:13px}.topbar{align-items:flex-start;flex-direction:column}.stats{grid-template-columns:1fr 1fr}.toolbar{align-items:flex-start;flex-direction:column}.provider-filter{margin-left:0;align-items:flex-start;flex-direction:column;width:100%}.provider-filter select{width:100%;min-width:0}.searchrow{flex-direction:column}.officerhero{align-items:flex-start;flex-direction:column}.brand img{height:48px}} @media print{html,body{width:297mm;height:210mm;margin:0!important;padding:0!important;background:#fff!important;overflow:hidden!important}.shell,dialog,.auth-gate,.loading-overlay{display:none!important}#certificate{display:block!important;position:static!important;width:297mm;height:210mm;min-height:0!important;margin:0!important;padding:10mm!important;overflow:hidden!important;break-after:avoid-page;page-break-after:avoid}#certificate .cert-inner{height:190mm;min-height:0!important}@page{size:A4 landscape;margin:0}}
   </style>
 </head>
 <body>
 <div class="auth-gate" id="authGate">
   <section class="auth-card" id="loginPanel">
-    <img src="securit-logo.png" alt="Securit" class="auth-logo">
-    <span class="eyebrow">Secure access</span>
-    <h2>Training Compliance Login</h2>
-    <p>Enter your authorised email address and PIN to access the live Securit training register.</p>
-    <form id="loginForm">
-      <div class="auth-field"><label for="loginEmail">Email address</label><input id="loginEmail" type="email" autocomplete="username" required></div>
-      <div class="auth-field"><label for="loginPin">PIN</label><input id="loginPin" type="password" inputmode="numeric" autocomplete="current-password" required></div>
-      <div class="auth-actions"><button class="btn primary" id="loginBtn" type="submit">Sign in</button></div>
-      <p class="auth-message" id="loginMessage"></p>
-    </form>
+    <img src="securit-logo.png" alt="Securit" class="auth-logo"><span class="eyebrow">Secure access</span><h2>Training Compliance Login</h2><p>Enter your authorised email address and PIN to access the live Securit training register.</p>
+    <form id="loginForm"><div class="auth-field"><label for="loginEmail">Email address</label><input id="loginEmail" type="email" autocomplete="username" required></div><div class="auth-field"><label for="loginPin">PIN</label><input id="loginPin" type="password" inputmode="numeric" autocomplete="current-password" required></div><div class="auth-actions"><button class="btn primary" id="loginBtn" type="submit">Sign in</button></div><p class="auth-message" id="loginMessage"></p></form>
   </section>
   <section class="auth-card hidden" id="changePinPanel">
-    <img src="securit-logo.png" alt="Securit" class="auth-logo">
-    <span class="eyebrow">First login</span>
-    <h2>Choose a new PIN</h2>
-    <p>Your temporary PIN must be changed before the dashboard can be opened.</p>
-    <form id="changePinForm">
-      <div class="auth-field"><label for="newPin">New PIN</label><input id="newPin" type="password" inputmode="numeric" autocomplete="new-password" minlength="4" required></div>
-      <div class="auth-field"><label for="confirmPin">Confirm new PIN</label><input id="confirmPin" type="password" inputmode="numeric" autocomplete="new-password" minlength="4" required></div>
-      <div class="auth-actions"><button class="btn primary" id="changePinBtn" type="submit">Update PIN</button></div>
-      <p class="auth-message" id="changePinMessage"></p>
-    </form>
+    <img src="securit-logo.png" alt="Securit" class="auth-logo"><span class="eyebrow">First login</span><h2>Choose a new PIN</h2><p>Your temporary PIN must be changed before the dashboard can be opened.</p>
+    <form id="changePinForm"><div class="auth-field"><label for="newPin">New PIN</label><input id="newPin" type="password" inputmode="numeric" autocomplete="new-password" minlength="4" required></div><div class="auth-field"><label for="confirmPin">Confirm new PIN</label><input id="confirmPin" type="password" inputmode="numeric" autocomplete="new-password" minlength="4" required></div><div class="auth-actions"><button class="btn primary" id="changePinBtn" type="submit">Update PIN</button></div><p class="auth-message" id="changePinMessage"></p></form>
   </section>
 </div>
+<div class="loading-overlay hidden" id="loadingOverlay" aria-live="polite" aria-busy="true"><section class="loading-card"><img src="securit-logo.png" alt="Securit" class="loading-logo"><h2 class="loading-title">Loading compliance data…</h2><p class="loading-copy" id="loadingText">Please wait while the live training register spins up and checks the decks.</p><div class="loading-progress"><div class="loading-bar" id="loadingBar"></div></div><div class="loading-meta"><span id="loadingStage">Connecting to live register</span><span class="loading-percent" id="loadingPercent">0%</span></div></section></div>
 <div class="shell" id="appShell">
-  <header class="topbar">
-    <div class="brand">
-      <img src="securit-logo.png" alt="Securit">
-      <div>
-        <h1>Guarding Training Compliance</h1>
-        <p>Securit live training register</p>
-      </div>
-    </div>
-    <div class="userbar">
-      <div class="who"><strong id="signedInName">Signed in</strong><span id="signedInEmail"></span></div>
-      <button class="btn secondary logoutbtn" id="logoutBtn" type="button">Sign out</button>
-      <div class="sync"><span class="sync-dot" id="syncDot"></span><span id="syncText">Waiting for authentication…</span></div>
-    </div>
-  </header>
-
-  <section class="hero">
-    <article class="card intro">
-      <span class="eyebrow">Compliance dashboard</span>
-      <h2>Securit Guarding Induction &amp; Core Training</h2>
-      <p>Live compliance status for active officers across the six mandatory training modules. Passed training becomes due for reassessment after 11 calendar months and expires after 12 calendar months. Officer site is taken from the newest Rolling Staff DB record and matched to the CMS Estate DB to identify the responsible Operations Manager.</p>
-      <div class="legend">
-        <span class="pill current">Current</span>
-        <span class="pill due">Reassessment Due</span>
-        <span class="pill failed">Failed</span>
-        <span class="pill expired">Expired</span>
-        <span class="pill not-taken">Not Taken</span>
-      </div>
-    </article>
-    <article class="card searchbox">
-      <label for="searchInput">Find officer</label>
-      <div class="searchrow">
-        <input id="searchInput" autocomplete="off" placeholder="Staff ID, name, site or manager">
-        <button class="btn primary" id="searchBtn">Search</button>
-      </div>
-    </article>
-  </section>
-
-  <section class="stats">
-    <article class="card stat"><span>Active Staff</span><strong id="statTotal">—</strong><small>Unique Staff IDs</small></article>
-    <article class="card stat"><span>Green</span><strong id="statGreen">—</strong><small>6/6 Current</small></article>
-    <article class="card stat"><span>Amber</span><strong id="statAmber">—</strong><small>Reassessment due</small></article>
-    <article class="card stat"><span>Red</span><strong id="statRed">—</strong><small>Action required</small></article>
-    <article class="card stat"><span>Compliance</span><strong id="statRate">—</strong><small>Fully current</small></article>
-  </section>
-
-  <section class="card toolbar">
-    <div class="filterset">
-      <button class="filterbtn active" data-filter="all">All</button>
-      <button class="filterbtn" data-filter="green">Green</button>
-      <button class="filterbtn" data-filter="amber">Amber</button>
-      <button class="filterbtn" data-filter="red">Red</button>
-    </div>
-    <div class="provider-filter">
-      <label for="providerFilter">Company / labour provider</label>
-      <select id="providerFilter">
-        <option value="all">All Officers</option>
-      </select>
-    </div>
-    <span class="count" id="resultCount"></span>
-  </section>
-
-  <section class="card tablewrap">
-    <table>
-      <thead>
-        <tr>
-          <th>Officer</th>
-          <th>Current / Latest Site</th>
-          <th>Ops Manager</th>
-          <th>Ethics</th>
-          <th>Unexpected Filming</th>
-          <th>ID / OOH / Social</th>
-          <th>Incident Reporting</th>
-          <th>Health & Safety</th>
-          <th>Checkpoint & Welfare</th>
-          <th>Overall</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody id="officerRows"></tbody>
-    </table>
-    <div class="empty hidden" id="emptyState">No officers match the current filter.</div>
-  </section>
+  <header class="topbar"><div class="brand"><img src="securit-logo.png" alt="Securit"><div><h1>Guarding Training Compliance</h1><p>Securit live training register</p></div></div><div class="userbar"><div class="who"><strong id="signedInName">Signed in</strong><span id="signedInEmail"></span></div><button class="btn secondary logoutbtn" id="logoutBtn" type="button">Sign out</button><div class="sync"><span class="sync-dot" id="syncDot"></span><span id="syncText">Waiting for authentication…</span></div></div></header>
+  <section class="hero"><article class="card intro"><span class="eyebrow">Compliance dashboard</span><h2>Securit Guarding Induction &amp; Core Training</h2><p>Live compliance status for active officers across the six mandatory training modules. Passed training becomes due for reassessment after 11 calendar months and expires after 12 calendar months. Officer site is taken from the newest Rolling Staff DB record and matched to the CMS Estate DB to identify the responsible Operations Manager.</p><div class="legend"><span class="pill current">Current</span><span class="pill due">Reassessment Due</span><span class="pill failed">Failed</span><span class="pill expired">Expired</span><span class="pill not-taken">Not Taken</span></div></article><article class="card searchbox"><label for="searchInput">Find officer</label><div class="searchrow"><input id="searchInput" autocomplete="off" placeholder="Staff ID, name, site or manager"><button class="btn primary" id="searchBtn">Search</button></div></article></section>
+  <section class="stats"><article class="card stat"><span>Active Staff</span><strong id="statTotal">—</strong><small>Unique Staff IDs</small></article><article class="card stat"><span>Green</span><strong id="statGreen">—</strong><small>6/6 Current</small></article><article class="card stat"><span>Amber</span><strong id="statAmber">—</strong><small>Reassessment due</small></article><article class="card stat"><span>Red</span><strong id="statRed">—</strong><small>Action required</small></article><article class="card stat"><span>Compliance</span><strong id="statRate">—</strong><small>Fully current</small></article></section>
+  <section class="card toolbar"><div class="filterset"><button class="filterbtn active" data-filter="all">All</button><button class="filterbtn" data-filter="green">Green</button><button class="filterbtn" data-filter="amber">Amber</button><button class="filterbtn" data-filter="red">Red</button></div><div class="provider-filter"><label for="providerFilter">Company / labour provider</label><select id="providerFilter"><option value="all">All Officers</option></select></div><span class="count" id="resultCount"></span></section>
+  <section class="card tablewrap"><table><thead><tr><th>Officer</th><th>Current / Latest Site</th><th>Ops Manager</th><th>Ethics</th><th>Unexpected Filming</th><th>ID / OOH / Social</th><th>Incident Reporting</th><th>Health &amp; Safety</th><th>Checkpoint &amp; Welfare</th><th>Overall</th><th></th></tr></thead><tbody id="officerRows"></tbody></table><div class="empty hidden" id="emptyState">No officers match the current filter.</div></section>
 </div>
-
-<dialog id="officerDialog">
-  <div class="modalhead">
-    <div>
-      <span class="eyebrow">Officer training record</span>
-      <h3 id="modalName">Officer</h3>
-    </div>
-    <button class="closebtn" id="closeDialog" aria-label="Close">×</button>
-  </div>
-  <div class="modalbody">
-    <div class="officerhero">
-      <div><p id="modalOverall"></p></div>
-      <button class="btn primary" id="certificateBtn">Print Certificate</button>
-    </div>
-    <div class="meta-grid">
-      <div class="meta-card"><span>Staff ID</span><strong id="modalStaff"></strong></div>
-      <div class="meta-card"><span>Site</span><strong id="modalSite"></strong></div>
-      <div class="meta-card"><span>Responsible Manager</span><strong id="modalManager"></strong></div>
-    </div>
-    <div class="modulegrid" id="moduleGrid"></div>
-    <div class="modalactions">
-      <button class="btn secondary" id="closeDialog2">Close</button>
-    </div>
-  </div>
-</dialog>
-
-<section class="cert" id="certificate">
-  <div class="cert-inner">
-    <div class="cert-top">
-      <img class="cert-logo" src="securit-logo.png" alt="Securit">
-      <div id="certRef"></div>
-    </div>
-    <div class="cert-accent"></div>
-    <h1>Training Compliance Certificate</h1>
-    <div class="lead">This certifies that the following employee is current in all required core training modules.</div>
-    <div class="name" id="certName"></div>
-    <div class="staffid" id="certStaff"></div>
-    <div class="cert-grid" id="certGrid"></div>
-    <div class="cert-foot">
-      <span id="certIssue"></span>
-      <span id="certValid"></span>
-      <span>This certificate reflects the live Securit training register at the time of issue.</span>
-    </div>
-  </div>
-</section>
-
+<dialog id="officerDialog"><div class="modalhead"><div><span class="eyebrow">Officer training record</span><h3 id="modalName">Officer</h3></div><button class="closebtn" id="closeDialog" aria-label="Close">×</button></div><div class="modalbody"><div class="officerhero"><div><p id="modalOverall"></p></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn secondary" id="sendCertificateBtn">Send Certificate via WhatsApp</button><button class="btn primary" id="certificateBtn">Print Certificate</button></div></div><div class="meta-grid"><div class="meta-card"><span>Staff ID</span><strong id="modalStaff"></strong></div><div class="meta-card"><span>Site</span><strong id="modalSite"></strong></div><div class="meta-card"><span>Responsible Manager</span><strong id="modalManager"></strong></div></div><div class="modulegrid" id="moduleGrid"></div><div class="modalactions"><button class="btn secondary" id="closeDialog2">Close</button></div></div></dialog>
+<section class="cert" id="certificate"><div class="cert-inner"><div class="cert-watermark">SECURIT</div><div class="cert-header"><div class="cert-top"><img class="cert-logo" src="securit-logo.png" alt="Securit"><div class="cert-refbox"><div>Live training register certificate</div><strong id="certRef"></strong></div></div></div><div class="cert-accent"></div><div class="cert-body"><div class="cert-kicker">Certificate of Completion</div><div class="cert-seal">Authorised<br><strong>SECURIT</strong><br>Training Record</div><h1>Securit Guarding Induction &amp; Core Training</h1><div class="lead">Awarded in recognition of successful completion of the mandatory Securit guarding induction and core training programme.</div><div class="cert-award">Presented to</div><div class="name" id="certName"></div><div class="staffid" id="certStaff"></div><div class="cert-programme">The holder of this certificate is recorded as current in all six mandatory training modules at the time of issue, including Ethics &amp; Compliance, Unexpected Filming by Visitors, ID / Out of Hours / Social Engineering, Incident Reporting, Health &amp; Safety, and Checkpoint &amp; Welfare.</div><div class="cert-ribbon"><span>All six modules current at point of issue</span></div><div class="cert-grid" id="certGrid"></div><div class="cert-lower"><div class="cert-note">This certificate reflects the live Securit training register at the point of printing and is intended to evidence completion of the current guarding induction and core training requirements. Continued validity depends on reassessment dates remaining in date within the live system.</div><div class="cert-signoff"><img src="signature-jpbw.png" alt="J.P. Bewsey-Wilkinson signature" class="cert-signature"><div class="cert-signer">J.P. Bewsey-Wilkinson</div><div class="cert-title">Technical Development &amp; Business Intelligence</div></div></div></div><div class="cert-foot"><span id="certIssue"></span><span id="certValid"></span><span>Securit Group Ltd</span></div></div></section>
+<script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
 <script src="config.js"></script>
 <script>
-const COURSE_DEFS = [
-  { key:"ethics", title:"Ethics & Compliance Knowledge", link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dUMkcwQlJZS1dEV0NJMEo5UUxKRDZNQVUzMC4u" },
-  { key:"unexpected-filming", title:"Unexpected Filming by Visitors", link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dUQlpXV04wWjJXREVaR0xMTTRXT0c4U1BGOC4u" },
-  { key:"id-ooh-social", title:"ID Checks, Out of Hours Visitors & Social Engineering", link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dUNUczT1dPSVNQRDFOS1VGMVYzT0FLVDJHMy4u" },
-  { key:"incident-reporting", title:"Static Security Incident Reporting Training", link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dURjUyVjM1VjZaMzNJTVQ0REJLR1pGTjJETS4u" },
-  { key:"health-safety", title:"Health & Safety for Security Officers", link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dUQkhNWTM4M0JUUVpCVUJIMzM3OTBBUElQOC4u" },
-  { key:"checkpoint-welfare", title:"Check Point & Welfare Training", link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dUNUZDUVIyOUxGTEhDWFA2Skg4NEpLMlZBQS4u" }
+const COURSE_DEFS=[
+{key:"ethics",title:"Ethics & Compliance Knowledge",link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dUMkcwQlJZS1dEV0NJMEo5UUxKRDZNQVUzMC4u"},
+{key:"unexpected-filming",title:"Unexpected Filming by Visitors",link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dUQlpXV04wWjJXREVaR0xMTTRXT0c4U1BGOC4u"},
+{key:"id-ooh-social",title:"ID Checks, Out of Hours Visitors & Social Engineering",link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dUNUczT1dPSVNQRDFOS1VGMVYzT0FLVDJHMy4u"},
+{key:"incident-reporting",title:"Static Security Incident Reporting Training",link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dURjUyVjM1VjZaMzNJTVQ0REJLR1pGTjJETS4u"},
+{key:"health-safety",title:"Health & Safety for Security Officers",link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dUQkhNWTM4M0JUUVpCVUJIMzM3OTBBUElQOC4u"},
+{key:"checkpoint-welfare",title:"Check Point & Welfare Training",link:"https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=XPPKgxhLV0qCCQDkR_qnEEj_lMviwXFLrMR_PCwXS1dUNUZDUVIyOUxGTEhDWFA2Skg4NEpLMlZBQS4u"}
 ];
+const MANAGER_NAMES={"karl.taylor@securit.email":"Karl Taylor","darrell.sloan@securit.email":"Darrell Sloan","a.ali@secur-it.co.uk":"Arfaan Ali","a.ali@securit.email":"Arfaan Ali","lee.edson@securit.email":"Lee Edson","mark.pilgrim@securit.email":"Mark Pilgrim"};
+const AUTH_STORAGE_KEY="securitTrainingAuthV1";
+const LOADING_EASTER_EGGS=["Booting duality drive plates","Aligning holosuite","Locating scutters on deck 7","Recalibrating vending machine morale","Checking the chicken soup dispenser","Polishing the drive plates"];
+let officers=[],activeFilter="all",activeProvider="all",selectedOfficer=null,authState={email:"",token:"",displayName:""},loadingProgress=0,loadingTick=null,loadingMessageTick=null;
+const el=id=>document.getElementById(id);
+function normaliseSpace(v){return String(v??"").trim().replace(/\s+/g," ")} function normaliseKey(v){return normaliseSpace(v).toLowerCase()} function parseCreated(v){const t=Date.parse(v||"");return Number.isFinite(t)?t:0}
+function managerDisplay(email){const clean=String(email||"").trim().toLowerCase();if(!clean) return "Not assigned";if(MANAGER_NAMES[clean]) return MANAGER_NAMES[clean];const local=clean.split("@")[0].replace(/[._-]+/g," ").replace(/\b\w/g,c=>c.toUpperCase());return local||clean}
+function excelSerialToDate(serial){const n=Number(serial);if(!Number.isFinite(n)) return null;const utcMs=Date.UTC(1899,11,30)+(n*86400000);const d=new Date(utcMs);return new Date(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())}
+function dateOnly(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
+function addMonthsSafe(date,months){const d=new Date(date.getFullYear(),date.getMonth(),date.getDate());const day=d.getDate();d.setDate(1);d.setMonth(d.getMonth()+months);const last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();d.setDate(Math.min(day,last));return d}
+function formatDateUK(date){if(!date) return "—";return new Intl.DateTimeFormat("en-GB",{day:"2-digit",month:"2-digit",year:"numeric"}).format(date)}
+function latestAttempt(attempts,staffId){return(attempts||[]).filter(a=>String(a.staffID??"").trim()===String(staffId)).map(a=>({...a,serial:Number(a.completionSerial)})).filter(a=>Number.isFinite(a.serial)).sort((a,b)=>b.serial-a.serial)[0]||null}
+function courseStatus(attempt){if(!attempt) return {code:"not-taken",label:"Not Taken",date:null,attempt:null};const completed=excelSerialToDate(attempt.completionSerial);if(!attempt.pass) return {code:"failed",label:"Failed",date:completed,attempt};if(!completed) return {code:"failed",label:"Failed",date:null,attempt};const today=dateOnly(new Date());const due=addMonthsSafe(completed,11);const expiry=addMonthsSafe(completed,12);if(today>=expiry) return {code:"expired",label:"Expired",date:completed,attempt,due,expiry};if(today>=due) return {code:"due",label:"Reassessment Due",date:completed,attempt,due,expiry};return {code:"current",label:"Current",date:completed,attempt,due,expiry}}
+function overallStatus(courseMap){const s=Object.values(courseMap);if(s.every(x=>x.code==="current")) return {code:"green",label:"Green — Fully Current"};if(s.every(x=>["current","due"].includes(x.code))&&s.some(x=>x.code==="due")) return {code:"amber",label:"Amber — Reassessment Due"};return {code:"red",label:"Red — Action Required"}}
+function selectLatestStaffRows(staff){const unique=new Map();for(const person of(staff||[])){const id=String(person.staffId??"").trim();if(!id) continue;const candidate={staffId:id,fullName:normaliseSpace(person.fullName)||`Staff ${id}`,contractor:normaliseSpace(person.Contractor),siteName:normaliseSpace(person.siteName),phone:normaliseSpace(person.phone),created:person.created||person.Created||""};const existing=unique.get(id);if(!existing||parseCreated(candidate.created)>=parseCreated(existing.created)) unique.set(id,candidate)}return[...unique.values()]}
+function buildOfficerData(payload){const siteMap=new Map();for(const site of(payload.sites||[])){const key=normaliseKey(site.siteName);if(!key) continue;siteMap.set(key,{siteName:normaliseSpace(site.siteName),managerEmail:normaliseSpace(site.managerEmail),siteId:String(site.siteId??""),active:normaliseSpace(site.active)})}return selectLatestStaffRows(payload.staff).map(person=>{const site=siteMap.get(normaliseKey(person.siteName));const managerEmail=site?.managerEmail||"";const courses={};for(const c of COURSE_DEFS) courses[c.key]=courseStatus(latestAttempt(payload[c.key],person.staffId));return {...person,managerEmail,managerName:managerDisplay(managerEmail),siteMatched:Boolean(site),courses,overall:overallStatus(courses)}}).sort((a,b)=>a.fullName.localeCompare(b.fullName,"en-GB"))}
+function badge(s){return `<span class="pill ${s.code}">${s.label}</span>`} function courseCell(s){const score=s.attempt?`${s.attempt.score} pt${Number(s.attempt.score)===1?"":"s"} · ${formatDateUK(s.date)}`:"No recorded attempt";return `<div class="coursecell">${badge(s)}<span class="score">${score}</span></div>`}
+function escapeHtml(v){return String(v??"").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]))}
+function officerRow(o){const siteSub=o.siteMatched?"":`<span class="sub">No CMS site match</span>`;return `<tr data-rag="${o.overall.code}"><td class="person"><strong>${escapeHtml(o.fullName)}</strong><small>${escapeHtml(o.staffId)}${o.contractor?" · "+escapeHtml(o.contractor):""}</small></td><td class="sitecell">${escapeHtml(o.siteName||"—")}${siteSub}</td><td class="managercell">${escapeHtml(o.managerName)}</td>${COURSE_DEFS.map(c=>`<td>${courseCell(o.courses[c.key])}</td>`).join("")}<td class="overall"><span class="ragdot ${o.overall.code}"></span>${o.overall.code.toUpperCase()}</td><td><button class="btn secondary detailsbtn" data-id="${escapeHtml(o.staffId)}">View record</button></td></tr>`}
+function filteredOfficers(){const q=el("searchInput").value.trim().toLowerCase();return officers.filter(o=>{const ragOk=activeFilter==="all"||o.overall.code===activeFilter;const providerOk=activeProvider==="all"||normaliseKey(o.contractor)===activeProvider;const haystack=[o.staffId,o.fullName,o.contractor,o.siteName,o.managerName].join(" ").toLowerCase();return ragOk&&providerOk&&(!q||haystack.includes(q))})}
+function populateProviderFilter(){const select=el("providerFilter"),current=activeProvider;const providers=[...new Set(officers.map(o=>normaliseSpace(o.contractor)).filter(Boolean))].sort((a,b)=>a.localeCompare(b,"en-GB"));select.innerHTML='<option value="all">All Officers</option>'+providers.map(p=>`<option value="${escapeHtml(normaliseKey(p))}">${escapeHtml(p)}</option>`).join("");if([...select.options].some(o=>o.value===current)) select.value=current}
+function animateNumber(node,target,suffix=""){const start=Number(String(node.textContent).replace(/[^0-9.-]/g,""))||0,diff=target-start,duration=500,startTime=performance.now();function step(now){const t=Math.min(1,(now-startTime)/duration),eased=1-Math.pow(1-t,3),value=Math.round(start+diff*eased);node.textContent=`${value.toLocaleString("en-GB")}${suffix}`;if(t<1) requestAnimationFrame(step)}requestAnimationFrame(step)}
+function render(){const list=filteredOfficers();renderStats(list);el("officerRows").innerHTML=list.map(officerRow).join("");el("emptyState").classList.toggle("hidden",list.length!==0);el("resultCount").textContent=`${list.length} officer${list.length===1?"":"s"} shown`;document.querySelectorAll(".detailsbtn").forEach(btn=>btn.addEventListener("click",()=>openOfficer(btn.dataset.id)))}
+function renderStats(list=filteredOfficers()){const total=list.length,green=list.filter(o=>o.overall.code==="green").length,amber=list.filter(o=>o.overall.code==="amber").length,red=list.filter(o=>o.overall.code==="red").length;animateNumber(el("statTotal"),total);animateNumber(el("statGreen"),green);animateNumber(el("statAmber"),amber);animateNumber(el("statRed"),red);animateNumber(el("statRate"),total?Math.round((green/total)*100):0,"%")}
+function normaliseWhatsAppNumber(value){let n=String(value||"").replace(/[^0-9+]/g,"");if(n.startsWith("+")) n=n.slice(1);if(n.startsWith("00")) n=n.slice(2);if(n.startsWith("0")) n="44"+n.slice(1);return /^\d{10,15}$/.test(n)?n:""}
+function firstName(fullName){return normaliseSpace(fullName).split(" ")[0]||"there"}
+function whatsAppUrl(officer,course,status){const number=normaliseWhatsAppNumber(officer.phone);if(!number) return "";const message=`Hi ${firstName(officer.fullName)},\n\nYour Securit ${course.title} training requires attention (${status.label}). Please complete the module using the link below:\n\n${course.link}\n\nThank you.`;return `https://wa.me/${number}?text=${encodeURIComponent(message)}`}
+function needsTrainingContact(status){return ["due","expired","failed","not-taken"].includes(status.code)}
+function openOfficer(staffId){const o=officers.find(x=>x.staffId===String(staffId));if(!o) return;selectedOfficer=o;el("modalName").textContent=o.fullName;el("modalStaff").textContent=o.staffId;el("modalSite").textContent=o.siteName||"Not available";el("modalManager").textContent=o.managerName;el("modalOverall").innerHTML=`<span class="pill ${o.overall.code}">${o.overall.label}</span>`;el("moduleGrid").innerHTML=COURSE_DEFS.map(c=>{const s=o.courses[c.key];const detail=!s.attempt?"No recorded attempt.":`Latest attempt: ${formatDateUK(s.date)} · Score ${s.attempt.score} · ${s.attempt.pass?"Pass":"Fail"}${s.expiry?` · Expires ${formatDateUK(s.expiry)}`:""}`;const contact=needsTrainingContact(s),wa=contact?whatsAppUrl(o,c,s):"";const action=contact?`<div class="module-action">${wa?`<a class="wa-btn" href="${escapeHtml(wa)}" target="_blank" rel="noopener noreferrer">Send training link via WhatsApp</a><span class="action-note">Opens WhatsApp on mobile or WhatsApp Web / desktop handling where available.</span>`:`<span class="wa-btn disabled">WhatsApp unavailable</span><span class="action-note">No valid mobile number is recorded for this officer.</span>`}</div>`:"";const cls=s.code==="due"?"module due-attention":(contact?"module attention":"module");return `<article class="${cls}"><div class="moduletop"><h4>${escapeHtml(c.title)}</h4>${badge(s)}</div><p>${escapeHtml(detail)}</p>${action}</article>`}).join("");const canCert=o.overall.code==="green";el("certificateBtn").disabled=!canCert;el("certificateBtn").title=canCert?"":"Certificate available only when all six modules are Current";el("sendCertificateBtn").disabled=!canCert;el("sendCertificateBtn").title=canCert?"":"Certificate sharing available only when all six modules are Current";el("officerDialog").showModal()}
+function buildCertificate(o){const rows=COURSE_DEFS.map(c=>({def:c,status:o.courses[c.key]}));if(!rows.every(x=>x.status.code==="current")) return;const earliest=rows.map(x=>x.status.date).filter(Boolean).sort((a,b)=>a-b)[0];const validUntil=addMonthsSafe(earliest,12),issue=dateOnly(new Date());const ref=`IND-${o.staffId}-${issue.getFullYear()}${String(issue.getMonth()+1).padStart(2,"0")}${String(issue.getDate()).padStart(2,"0")}`;el("certName").textContent=o.fullName;el("certStaff").textContent=`Staff ID ${o.staffId}${o.siteName?` · ${o.siteName}`:""}`;el("certRef").textContent=ref;el("certIssue").textContent=`Issued: ${formatDateUK(issue)}`;el("certValid").textContent=`Valid until: ${formatDateUK(validUntil)}`;el("certGrid").innerHTML=rows.map(x=>`<div class="cert-row"><span>${escapeHtml(x.def.title)}</span><strong>${formatDateUK(x.status.date)}</strong></div>`).join("")}
+function boolValue(v){return v===true||String(v).toLowerCase()==="true"||String(v).toLowerCase()==="yes"}
+function setAuthMessage(id,message,type=""){const node=el(id);node.textContent=message||"";node.className=`auth-message${type?" "+type:""}`}
+function saveAuth(){localStorage.setItem(AUTH_STORAGE_KEY,JSON.stringify({email:authState.email,token:authState.token,displayName:authState.displayName}))}
+function clearAuth(){authState={email:"",token:"",displayName:""};localStorage.removeItem(AUTH_STORAGE_KEY)}
+function getStoredAuth(){try{const parsed=JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY)||"{}");if(parsed.email&&parsed.token) return parsed}catch(e){}return null}
+function showLogin(message=""){el("authGate").classList.remove("hidden");el("loginPanel").classList.remove("hidden");el("changePinPanel").classList.add("hidden");setAuthMessage("loginMessage",message,message?"error":"");el("loginPin").value="";hideLoading();setTimeout(()=>el("loginEmail").focus(),0)}
+function showChangePin(){el("authGate").classList.remove("hidden");el("loginPanel").classList.add("hidden");el("changePinPanel").classList.remove("hidden");el("newPin").value="";el("confirmPin").value="";setAuthMessage("changePinMessage","");hideLoading();setTimeout(()=>el("newPin").focus(),0)}
+function showApp(){el("signedInName").textContent=authState.displayName||"Signed in";el("signedInEmail").textContent=authState.email;el("authGate").classList.add("hidden")}
+async function postJson(url,body){const response=await fetch(url,{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});let data={};try{data=await response.json()}catch(e){}return {response,data}}
+function base64ToBytes(value){const raw=atob(value);return Uint8Array.from(raw,c=>c.charCodeAt(0))} function bytesToBase64(bytes){let s="";bytes.forEach(b=>s+=String.fromCharCode(b));return btoa(s)}
+async function deriveVerifier(pin,saltBase64){const material=await crypto.subtle.importKey("raw",new TextEncoder().encode(pin),"PBKDF2",false,["deriveBits"]);const bits=await crypto.subtle.deriveBits({name:"PBKDF2",salt:base64ToBytes(saltBase64),iterations:210000,hash:"SHA-256"},material,256);return bytesToBase64(new Uint8Array(bits))}
+function generateSalt(){const bytes=new Uint8Array(16);crypto.getRandomValues(bytes);return bytesToBase64(bytes)}
+function setLoadingProgress(value,stage){loadingProgress=Math.max(0,Math.min(100,Math.round(value)));el("loadingBar").style.width=`${loadingProgress}%`;el("loadingPercent").textContent=`${loadingProgress}%`;if(stage) el("loadingStage").textContent=stage}
+function showLoading(message="Loading compliance data…"){el("loadingText").textContent=message;el("loadingOverlay").classList.remove("hidden");setLoadingProgress(0,LOADING_EASTER_EGGS[0]);if(loadingTick) clearInterval(loadingTick);if(loadingMessageTick) clearInterval(loadingMessageTick);let loadingIndex=0;loadingMessageTick=setInterval(()=>{if(loadingProgress>=92) return;loadingIndex=(loadingIndex+1)%LOADING_EASTER_EGGS.length;el("loadingStage").textContent=LOADING_EASTER_EGGS[loadingIndex]},1400);loadingTick=setInterval(()=>{if(loadingProgress<55) setLoadingProgress(loadingProgress+5,LOADING_EASTER_EGGS[Math.min(loadingIndex,LOADING_EASTER_EGGS.length-1)]);else if(loadingProgress<75) setLoadingProgress(loadingProgress+2,"Matching staff and site records");else if(loadingProgress<90) setLoadingProgress(loadingProgress+1,"Calculating training compliance")},90)}
+function hideLoading(){if(loadingTick){clearInterval(loadingTick);loadingTick=null}if(loadingMessageTick){clearInterval(loadingMessageTick);loadingMessageTick=null}setLoadingProgress(100,"Dashboard ready");setTimeout(()=>el("loadingOverlay").classList.add("hidden"),280)}
+async function login(email,pin){const auth=window.SECURIT_AUTH||{};if(!auth.getSalt||!auth.login) throw new Error("Authentication endpoints are not configured.");const saltResult=await postJson(auth.getSalt,{email});if(!saltResult.data?.success||!saltResult.data?.salt) throw new Error("Invalid email or PIN.");const verifier=await deriveVerifier(pin,saltResult.data.salt);const loginResult=await postJson(auth.login,{email,verifier});if(!loginResult.response.ok||!loginResult.data?.success) throw new Error(loginResult.data?.message||"Invalid email or PIN.");authState={email,token:loginResult.data.token,displayName:loginResult.data.displayName||""};saveAuth();if(boolValue(loginResult.data.mustChangePassword)){showChangePin();return false}showApp();await loadData();return true}
+async function changePin(newPin){const auth=window.SECURIT_AUTH||{};if(!auth.changePin) throw new Error("Change PIN endpoint is not configured.");const newSalt=generateSalt();const newVerifier=await deriveVerifier(newPin,newSalt);const result=await postJson(auth.changePin,{email:authState.email,token:authState.token,newSalt,newVerifier});if(!result.response.ok||!result.data?.success) throw new Error(result.data?.message||"PIN could not be updated.");showApp();await loadData()}
+async function certificateToBlob(){if(typeof html2canvas==="undefined") throw new Error("Certificate renderer is unavailable.");const cert=el("certificate");const previousStyle=cert.getAttribute("style")||"";cert.style.display="block";cert.style.position="fixed";cert.style.left="-10000px";cert.style.top="0";cert.style.zIndex="-1";const canvas=await html2canvas(cert.querySelector(".cert-inner"),{backgroundColor:"#ffffff",scale:2,useCORS:true});if(previousStyle) cert.setAttribute("style",previousStyle); else cert.removeAttribute("style");return await new Promise(resolve=>canvas.toBlob(resolve,"image/png",1))}
+function triggerBlobDownload(blob,filename){const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1500)}
+async function sendCertificateViaWhatsApp(){if(!selectedOfficer||selectedOfficer.overall.code!=="green") return;buildCertificate(selectedOfficer);const number=normaliseWhatsAppNumber(selectedOfficer.phone);const message=`Hi ${firstName(selectedOfficer.fullName)}, please find your Securit Guarding Induction & Core Training certificate.`;const blob=await certificateToBlob();if(!blob) throw new Error("Certificate image could not be prepared.");const file=new File([blob],`Securit-Certificate-${selectedOfficer.staffId}.png`,{type:"image/png"});if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:"Securit training certificate",text:message});return}triggerBlobDownload(blob,file.name);if(number){window.open(`https://wa.me/${number}?text=${encodeURIComponent(message+" Please attach the downloaded certificate image if it is not added automatically.")}`,"_blank","noopener")}else{throw new Error("No valid mobile number is recorded for this officer. The certificate image has been downloaded instead.")}}
+async function validateStoredSession(){const stored=getStoredAuth();if(!stored){showLogin();return}authState={email:stored.email,token:stored.token,displayName:stored.displayName||""};const auth=window.SECURIT_AUTH||{};if(!auth.validate){clearAuth();showLogin("Authentication is not configured.");return}try{const result=await postJson(auth.validate,{email:authState.email,token:authState.token});if(!result.response.ok||!result.data?.success) throw new Error("Session invalid or expired.");authState.displayName=result.data.displayName||authState.displayName;saveAuth();if(boolValue(result.data.mustChangePassword)){showChangePin();return}showApp();await loadData()}catch(err){clearAuth();showLogin("Your session has expired. Please sign in again.")}}
+async function loadData(){const dot=el("syncDot"),txt=el("syncText");showLoading();try{const apiUrl=String(window.SECURIT_TRAINING_API_URL||"").trim();if(!apiUrl) throw new Error("API URL is not configured in config.js");const response=await fetch(apiUrl,{method:"POST",cache:"no-store"});setLoadingProgress(68,"Retrieving training records");if(!response.ok) throw new Error(`API returned HTTP ${response.status}`);const payload=await response.json();setLoadingProgress(82,"Validating register data");const required=["staff","sites",...COURSE_DEFS.map(c=>c.key)],missing=required.filter(k=>!Array.isArray(payload[k]));if(missing.length) throw new Error(`Missing API arrays: ${missing.join(", ")}`);officers=buildOfficerData(payload);populateProviderFilter();render();const unmatched=officers.filter(o=>o.siteName&&!o.siteMatched).length;dot.className="sync-dot ok";txt.textContent=`Live register loaded · ${officers.length} staff${unmatched?` · ${unmatched} unmatched site${unmatched===1?"":"s"}`:""}`;setLoadingProgress(100,"Dashboard ready")}catch(err){console.error(err);dot.className="sync-dot bad";txt.textContent="Live register unavailable";el("emptyState").classList.remove("hidden");el("emptyState").textContent=`Training data could not be loaded: ${err.message}`;setLoadingProgress(100,"Unable to load live register")}finally{hideLoading()}}
 
-const MANAGER_NAMES = {
-  "karl.taylor@securit.email":"Karl Taylor",
-  "darrell.sloan@securit.email":"Darrell Sloan",
-  "a.ali@secur-it.co.uk":"Arfaan Ali",
-  "a.ali@securit.email":"Arfaan Ali",
-  "lee.edson@securit.email":"Lee Edson",
-  "mark.pilgrim@securit.email":"Mark Pilgrim"
-};
-
-let officers = [];
-let activeFilter = "all";
-let activeProvider = "all";
-let selectedOfficer = null;
-let authState = { email:"", token:"", displayName:"" };
-const AUTH_STORAGE_KEY = "securitTrainingAuthV1";
-
-const el = id => document.getElementById(id);
-
-function normaliseSpace(v){
-  return String(v ?? "").trim().replace(/\s+/g," ");
-}
-function normaliseKey(v){
-  return normaliseSpace(v).toLowerCase();
-}
-function parseCreated(v){
-  const t = Date.parse(v || "");
-  return Number.isFinite(t) ? t : 0;
-}
-function managerDisplay(email){
-  const clean = String(email || "").trim().toLowerCase();
-  if (!clean) return "Not assigned";
-  if (MANAGER_NAMES[clean]) return MANAGER_NAMES[clean];
-  const local = clean.split("@")[0]
-    .replace(/[._-]+/g," ")
-    .replace(/\b\w/g,c=>c.toUpperCase());
-  return local || clean;
-}
-function excelSerialToDate(serial){
-  const n = Number(serial);
-  if (!Number.isFinite(n)) return null;
-  const utcMs = Date.UTC(1899,11,30) + (n * 86400000);
-  const d = new Date(utcMs);
-  return new Date(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate());
-}
-function dateOnly(d){ return new Date(d.getFullYear(),d.getMonth(),d.getDate()); }
-function addMonthsSafe(date,months){
-  const d = new Date(date.getFullYear(),date.getMonth(),date.getDate());
-  const day = d.getDate();
-  d.setDate(1);
-  d.setMonth(d.getMonth()+months);
-  const last = new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
-  d.setDate(Math.min(day,last));
-  return d;
-}
-function formatDateUK(date){
-  if(!date) return "—";
-  return new Intl.DateTimeFormat("en-GB",{day:"2-digit",month:"2-digit",year:"numeric"}).format(date);
-}
-function latestAttempt(attempts,staffId){
-  return (attempts || [])
-    .filter(a=>String(a.staffID ?? "").trim() === String(staffId))
-    .map(a=>({...a,serial:Number(a.completionSerial)}))
-    .filter(a=>Number.isFinite(a.serial))
-    .sort((a,b)=>b.serial-a.serial)[0] || null;
-}
-function courseStatus(attempt){
-  if(!attempt) return {code:"not-taken",label:"Not Taken",date:null,attempt:null};
-  const completed=excelSerialToDate(attempt.completionSerial);
-  if(!attempt.pass) return {code:"failed",label:"Failed",date:completed,attempt};
-  if(!completed) return {code:"failed",label:"Failed",date:null,attempt};
-  const today=dateOnly(new Date());
-  const due=addMonthsSafe(completed,11);
-  const expiry=addMonthsSafe(completed,12);
-  if(today>=expiry) return {code:"expired",label:"Expired",date:completed,attempt,due,expiry};
-  if(today>=due) return {code:"due",label:"Reassessment Due",date:completed,attempt,due,expiry};
-  return {code:"current",label:"Current",date:completed,attempt,due,expiry};
-}
-function overallStatus(courseMap){
-  const s=Object.values(courseMap);
-  if(s.every(x=>x.code==="current")) return {code:"green",label:"Green — Fully Current"};
-  if(s.every(x=>["current","due"].includes(x.code)) && s.some(x=>x.code==="due")){
-    return {code:"amber",label:"Amber — Reassessment Due"};
-  }
-  return {code:"red",label:"Red — Action Required"};
-}
-function selectLatestStaffRows(staff){
-  const unique=new Map();
-  for(const person of (staff || [])){
-    const id=String(person.staffId ?? "").trim();
-    if(!id) continue;
-    const candidate={
-      staffId:id,
-      fullName:normaliseSpace(person.fullName) || `Staff ${id}`,
-      contractor:normaliseSpace(person.Contractor),
-      siteName:normaliseSpace(person.siteName),
-      phone:normaliseSpace(person.phone),
-      created:person.created || person.Created || ""
-    };
-    const existing=unique.get(id);
-    // Newest Created wins. Ties: later row wins.
-    if(!existing || parseCreated(candidate.created) >= parseCreated(existing.created)){
-      unique.set(id,candidate);
-    }
-  }
-  return [...unique.values()];
-}
-function buildOfficerData(payload){
-  const siteMap=new Map();
-  for(const site of (payload.sites || [])){
-    const key=normaliseKey(site.siteName);
-    if(!key) continue;
-    siteMap.set(key,{
-      siteName:normaliseSpace(site.siteName),
-      managerEmail:normaliseSpace(site.managerEmail),
-      siteId:String(site.siteId ?? ""),
-      active:normaliseSpace(site.active)
-    });
-  }
-
-  return selectLatestStaffRows(payload.staff).map(person=>{
-    const site=siteMap.get(normaliseKey(person.siteName));
-    const managerEmail=site?.managerEmail || "";
-    const courses={};
-    for(const c of COURSE_DEFS){
-      courses[c.key]=courseStatus(latestAttempt(payload[c.key],person.staffId));
-    }
-    return {
-      ...person,
-      managerEmail,
-      managerName:managerDisplay(managerEmail),
-      siteMatched:Boolean(site),
-      courses,
-      overall:overallStatus(courses)
-    };
-  }).sort((a,b)=>a.fullName.localeCompare(b.fullName,"en-GB"));
-}
-function badge(s){ return `<span class="pill ${s.code}">${s.label}</span>`; }
-function courseCell(s){
-  const score=s.attempt ? `${s.attempt.score} pt${Number(s.attempt.score)===1?"":"s"} · ${formatDateUK(s.date)}` : "No recorded attempt";
-  return `<div class="coursecell">${badge(s)}<span class="score">${score}</span></div>`;
-}
-function escapeHtml(v){
-  return String(v ?? "").replace(/[&<>"']/g,s=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[s]));
-}
-function officerRow(o){
-  const siteSub=o.siteMatched ? "" : `<span class="sub">No CMS site match</span>`;
-  return `<tr data-rag="${o.overall.code}">
-    <td class="person"><strong>${escapeHtml(o.fullName)}</strong><small>${escapeHtml(o.staffId)}${o.contractor ? " · "+escapeHtml(o.contractor):""}</small></td>
-    <td class="sitecell">${escapeHtml(o.siteName || "—")}${siteSub}</td>
-    <td class="managercell">${escapeHtml(o.managerName)}</td>
-    ${COURSE_DEFS.map(c=>`<td>${courseCell(o.courses[c.key])}</td>`).join("")}
-    <td class="overall"><span class="ragdot ${o.overall.code}"></span>${o.overall.code.toUpperCase()}</td>
-    <td><button class="btn secondary detailsbtn" data-id="${escapeHtml(o.staffId)}">View record</button></td>
-  </tr>`;
-}
-function filteredOfficers(){
-  const q=el("searchInput").value.trim().toLowerCase();
-  return officers.filter(o=>{
-    const ragOk=activeFilter==="all" || o.overall.code===activeFilter;
-    const providerOk=activeProvider==="all" || normaliseKey(o.contractor)===activeProvider;
-    const haystack=[o.staffId,o.fullName,o.contractor,o.siteName,o.managerName].join(" ").toLowerCase();
-    return ragOk && providerOk && (!q || haystack.includes(q));
-  });
-}
-function populateProviderFilter(){
-  const select=el("providerFilter");
-  const current=activeProvider;
-  const providers=[...new Set(officers.map(o=>normaliseSpace(o.contractor)).filter(Boolean))]
-    .sort((a,b)=>a.localeCompare(b,"en-GB"));
-  select.innerHTML='<option value="all">All Officers</option>' +
-    providers.map(p=>`<option value="${escapeHtml(normaliseKey(p))}">${escapeHtml(p)}</option>`).join("");
-  if ([...select.options].some(o=>o.value===current)) select.value=current;
-}
-
-function render(){
-  const list=filteredOfficers();
-  renderStats(list);
-  el("officerRows").innerHTML=list.map(officerRow).join("");
-  el("emptyState").classList.toggle("hidden",list.length!==0);
-  el("resultCount").textContent=`${list.length} officer${list.length===1?"":"s"} shown`;
-  document.querySelectorAll(".detailsbtn").forEach(btn=>btn.addEventListener("click",()=>openOfficer(btn.dataset.id)));
-}
-function renderStats(list = filteredOfficers()){
-  const total=list.length;
-  const green=list.filter(o=>o.overall.code==="green").length;
-  const amber=list.filter(o=>o.overall.code==="amber").length;
-  const red=list.filter(o=>o.overall.code==="red").length;
-  el("statTotal").textContent=total.toLocaleString("en-GB");
-  el("statGreen").textContent=green.toLocaleString("en-GB");
-  el("statAmber").textContent=amber.toLocaleString("en-GB");
-  el("statRed").textContent=red.toLocaleString("en-GB");
-  el("statRate").textContent=total ? `${Math.round((green/total)*100)}%` : "0%";
-}
-function normaliseWhatsAppNumber(value){
-  let n=String(value || "").replace(/[^0-9+]/g,"");
-  if(n.startsWith("+")) n=n.slice(1);
-  if(n.startsWith("00")) n=n.slice(2);
-  if(n.startsWith("0")) n="44"+n.slice(1);
-  return /^\d{10,15}$/.test(n) ? n : "";
-}
-function firstName(fullName){
-  return normaliseSpace(fullName).split(" ")[0] || "there";
-}
-function whatsAppUrl(officer,course,status){
-  const number=normaliseWhatsAppNumber(officer.phone);
-  if(!number) return "";
-  const message=`Hi ${firstName(officer.fullName)},\n\nYour Securit ${course.title} training requires attention (${status.label}). Please complete the module using the link below:\n\n${course.link}\n\nThank you.`;
-  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
-}
-function needsTrainingContact(status){
-  return ["due","expired","failed","not-taken"].includes(status.code);
-}
-
-function openOfficer(staffId){
-  const o=officers.find(x=>x.staffId===String(staffId));
-  if(!o) return;
-  selectedOfficer=o;
-  el("modalName").textContent=o.fullName;
-  el("modalStaff").textContent=o.staffId;
-  el("modalSite").textContent=o.siteName || "Not available";
-  el("modalManager").textContent=o.managerName;
-  el("modalOverall").innerHTML=`<span class="pill ${o.overall.code}">${o.overall.label}</span>`;
-  el("moduleGrid").innerHTML=COURSE_DEFS.map(c=>{
-    const s=o.courses[c.key];
-    const detail=!s.attempt
-      ? "No recorded attempt."
-      : `Latest attempt: ${formatDateUK(s.date)} · Score ${s.attempt.score} · ${s.attempt.pass ? "Pass" : "Fail"}${s.expiry ? ` · Expires ${formatDateUK(s.expiry)}` : ""}`;
-    const contact=needsTrainingContact(s);
-    const wa=contact ? whatsAppUrl(o,c,s) : "";
-    const action=contact
-      ? `<div class="module-action">${wa
-          ? `<a class="wa-btn" href="${escapeHtml(wa)}" target="_blank" rel="noopener noreferrer">Send training link via WhatsApp</a><span class="action-note">Opens WhatsApp on mobile or WhatsApp Web / desktop handling where available.</span>`
-          : `<span class="wa-btn disabled">WhatsApp unavailable</span><span class="action-note">No valid mobile number is recorded for this officer.</span>`}
-        </div>`
-      : "";
-    const cls=s.code==="due" ? "module due-attention" : (contact ? "module attention" : "module");
-    return `<article class="${cls}"><div class="moduletop"><h4>${escapeHtml(c.title)}</h4>${badge(s)}</div><p>${escapeHtml(detail)}</p>${action}</article>`;
-  }).join("");
-  const canCert=o.overall.code==="green";
-  el("certificateBtn").disabled=!canCert;
-  el("certificateBtn").title=canCert ? "" : "Certificate available only when all six modules are Current";
-  el("officerDialog").showModal();
-}
-function buildCertificate(o){
-  const rows=COURSE_DEFS.map(c=>({def:c,status:o.courses[c.key]}));
-  if(!rows.every(x=>x.status.code==="current")) return;
-  const earliest=rows.map(x=>x.status.date).filter(Boolean).sort((a,b)=>a-b)[0];
-  const validUntil=addMonthsSafe(earliest,12);
-  const issue=dateOnly(new Date());
-  const ref=`${issue.getFullYear()}${String(issue.getMonth()+1).padStart(2,"0")}${String(issue.getDate()).padStart(2,"0")}`;
-  el("certName").textContent=o.fullName;
-  el("certStaff").textContent=`Staff ID ${o.staffId}`;
-  el("certRef").textContent=`Reference: IND-${o.staffId}-${ref}`;
-  el("certIssue").textContent=`Issued: ${formatDateUK(issue)}`;
-  el("certValid").textContent=`Valid until: ${formatDateUK(validUntil)}`;
-  el("certGrid").innerHTML=rows.map(x=>`<div class="cert-row"><span>${escapeHtml(x.def.title)}</span><strong>${formatDateUK(x.status.date)}</strong></div>`).join("");
-}
-function boolValue(v){
-  return v===true || String(v).toLowerCase()==="true" || String(v).toLowerCase()==="yes";
-}
-function setAuthMessage(id,message,type=""){
-  const node=el(id);
-  node.textContent=message || "";
-  node.className=`auth-message${type ? " "+type : ""}`;
-}
-function saveAuth(){
-  localStorage.setItem(AUTH_STORAGE_KEY,JSON.stringify({email:authState.email,token:authState.token,displayName:authState.displayName}));
-}
-function clearAuth(){
-  authState={email:"",token:"",displayName:""};
-  localStorage.removeItem(AUTH_STORAGE_KEY);
-}
-function getStoredAuth(){
-  try{
-    const parsed=JSON.parse(localStorage.getItem(AUTH_STORAGE_KEY) || "{}");
-    if(parsed.email && parsed.token) return parsed;
-  }catch(e){}
-  return null;
-}
-function showLogin(message=""){
-  el("authGate").classList.remove("hidden");
-  el("loginPanel").classList.remove("hidden");
-  el("changePinPanel").classList.add("hidden");
-  setAuthMessage("loginMessage",message,message ? "error" : "");
-  el("loginPin").value="";
-  setTimeout(()=>el("loginEmail").focus(),0);
-}
-function showChangePin(){
-  el("authGate").classList.remove("hidden");
-  el("loginPanel").classList.add("hidden");
-  el("changePinPanel").classList.remove("hidden");
-  el("newPin").value="";
-  el("confirmPin").value="";
-  setAuthMessage("changePinMessage","");
-  setTimeout(()=>el("newPin").focus(),0);
-}
-function showApp(){
-  el("signedInName").textContent=authState.displayName || "Signed in";
-  el("signedInEmail").textContent=authState.email;
-  el("authGate").classList.add("hidden");
-}
-async function postJson(url,body){
-  const response=await fetch(url,{method:"POST",cache:"no-store",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)});
-  let data={};
-  try{ data=await response.json(); }catch(e){}
-  return {response,data};
-}
-function base64ToBytes(value){
-  const raw=atob(value);
-  return Uint8Array.from(raw,c=>c.charCodeAt(0));
-}
-function bytesToBase64(bytes){
-  let s="";
-  bytes.forEach(b=>s+=String.fromCharCode(b));
-  return btoa(s);
-}
-async function deriveVerifier(pin,saltBase64){
-  const material=await crypto.subtle.importKey("raw",new TextEncoder().encode(pin),"PBKDF2",false,["deriveBits"]);
-  const bits=await crypto.subtle.deriveBits({name:"PBKDF2",salt:base64ToBytes(saltBase64),iterations:210000,hash:"SHA-256"},material,256);
-  return bytesToBase64(new Uint8Array(bits));
-}
-function generateSalt(){
-  const bytes=new Uint8Array(16);
-  crypto.getRandomValues(bytes);
-  return bytesToBase64(bytes);
-}
-async function login(email,pin){
-  const auth=window.SECURIT_AUTH || {};
-  if(!auth.getSalt || !auth.login) throw new Error("Authentication endpoints are not configured.");
-  const saltResult=await postJson(auth.getSalt,{email});
-  if(!saltResult.data?.success || !saltResult.data?.salt) throw new Error("Invalid email or PIN.");
-  const verifier=await deriveVerifier(pin,saltResult.data.salt);
-  const loginResult=await postJson(auth.login,{email,verifier});
-  if(!loginResult.response.ok || !loginResult.data?.success) throw new Error(loginResult.data?.message || "Invalid email or PIN.");
-  authState={email,token:loginResult.data.token,displayName:loginResult.data.displayName || ""};
-  saveAuth();
-  if(boolValue(loginResult.data.mustChangePassword)){
-    showChangePin();
-    return false;
-  }
-  showApp();
-  await loadData();
-  return true;
-}
-async function changePin(newPin){
-  const auth=window.SECURIT_AUTH || {};
-  if(!auth.changePin) throw new Error("Change PIN endpoint is not configured.");
-  const newSalt=generateSalt();
-  const newVerifier=await deriveVerifier(newPin,newSalt);
-  const result=await postJson(auth.changePin,{email:authState.email,token:authState.token,newSalt,newVerifier});
-  if(!result.response.ok || !result.data?.success) throw new Error(result.data?.message || "PIN could not be updated.");
-  showApp();
-  await loadData();
-}
-async function validateStoredSession(){
-  const stored=getStoredAuth();
-  if(!stored){ showLogin(); return; }
-  authState={email:stored.email,token:stored.token,displayName:stored.displayName || ""};
-  const auth=window.SECURIT_AUTH || {};
-  if(!auth.validate){ clearAuth(); showLogin("Authentication is not configured."); return; }
-  try{
-    const result=await postJson(auth.validate,{email:authState.email,token:authState.token});
-    if(!result.response.ok || !result.data?.success) throw new Error("Session invalid or expired.");
-    authState.displayName=result.data.displayName || authState.displayName;
-    saveAuth();
-    if(boolValue(result.data.mustChangePassword)){ showChangePin(); return; }
-    showApp();
-    await loadData();
-  }catch(err){
-    clearAuth();
-    showLogin("Your session has expired. Please sign in again.");
-  }
-}
-
-async function loadData(){
-  const dot=el("syncDot"), txt=el("syncText");
-  try{
-    const apiUrl=String(window.SECURIT_TRAINING_API_URL || "").trim();
-    if(!apiUrl) throw new Error("API URL is not configured in config.js");
-    const response=await fetch(apiUrl,{
-      method:"POST",
-      cache:"no-store"
-    });
-    if(!response.ok) throw new Error(`API returned HTTP ${response.status}`);
-    const payload=await response.json();
-
-    const required=["staff","sites",...COURSE_DEFS.map(c=>c.key)];
-    const missing=required.filter(k=>!Array.isArray(payload[k]));
-    if(missing.length) throw new Error(`Missing API arrays: ${missing.join(", ")}`);
-
-    officers=buildOfficerData(payload);
-    populateProviderFilter();
-    render();
-
-    const unmatched=officers.filter(o=>o.siteName && !o.siteMatched).length;
-    dot.className="sync-dot ok";
-    txt.textContent=`Live register loaded · ${officers.length} staff${unmatched ? ` · ${unmatched} unmatched site${unmatched===1?"":"s"}` : ""}`;
-  }catch(err){
-    console.error(err);
-    dot.className="sync-dot bad";
-    txt.textContent="Live register unavailable";
-    el("emptyState").classList.remove("hidden");
-    el("emptyState").textContent=`Training data could not be loaded: ${err.message}`;
-  }
-}
-document.querySelectorAll(".filterbtn").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    activeFilter=btn.dataset.filter;
-    document.querySelectorAll(".filterbtn").forEach(b=>b.classList.toggle("active",b===btn));
-    render();
-  });
-});
-el("providerFilter").addEventListener("change",()=>{
-  activeProvider=el("providerFilter").value;
-  render();
-});
-el("searchInput").addEventListener("input",render);
-el("searchBtn").addEventListener("click",render);
-el("closeDialog").addEventListener("click",()=>el("officerDialog").close());
-el("closeDialog2").addEventListener("click",()=>el("officerDialog").close());
-el("certificateBtn").addEventListener("click",()=>{
-  if(!selectedOfficer || selectedOfficer.overall.code!=="green") return;
-  buildCertificate(selectedOfficer);
-  window.print();
-});
-el("loginForm").addEventListener("submit",async event=>{
-  event.preventDefault();
-  const email=normaliseSpace(el("loginEmail").value).toLowerCase();
-  const pin=el("loginPin").value;
-  if(!email || !pin) return;
-  el("loginBtn").disabled=true;
-  setAuthMessage("loginMessage","Signing in…");
-  try{ await login(email,pin); }
-  catch(err){ setAuthMessage("loginMessage",err.message || "Sign in failed.","error"); }
-  finally{ el("loginBtn").disabled=false; }
-});
-el("changePinForm").addEventListener("submit",async event=>{
-  event.preventDefault();
-  const pin=el("newPin").value;
-  const confirm=el("confirmPin").value;
-  if(pin.length<4){ setAuthMessage("changePinMessage","PIN must contain at least 4 characters.","error"); return; }
-  if(pin!==confirm){ setAuthMessage("changePinMessage","The PINs do not match.","error"); return; }
-  el("changePinBtn").disabled=true;
-  setAuthMessage("changePinMessage","Updating PIN…");
-  try{ await changePin(pin); }
-  catch(err){ setAuthMessage("changePinMessage",err.message || "PIN could not be updated.","error"); }
-  finally{ el("changePinBtn").disabled=false; }
-});
-el("logoutBtn").addEventListener("click",()=>{
-  clearAuth();
-  officers=[]; selectedOfficer=null;
-  showLogin();
-});
+document.querySelectorAll(".filterbtn").forEach(btn=>btn.addEventListener("click",()=>{activeFilter=btn.dataset.filter;document.querySelectorAll(".filterbtn").forEach(b=>b.classList.toggle("active",b===btn));render()}));
+el("providerFilter").addEventListener("change",()=>{activeProvider=el("providerFilter").value;render()});el("searchInput").addEventListener("input",render);el("searchBtn").addEventListener("click",render);el("closeDialog").addEventListener("click",()=>el("officerDialog").close());el("closeDialog2").addEventListener("click",()=>el("officerDialog").close());el("certificateBtn").addEventListener("click",()=>{if(!selectedOfficer||selectedOfficer.overall.code!=="green") return;buildCertificate(selectedOfficer);window.print()});el("sendCertificateBtn").addEventListener("click",async()=>{if(!selectedOfficer||selectedOfficer.overall.code!=="green") return;const btn=el("sendCertificateBtn"),original=btn.textContent;btn.disabled=true;btn.textContent="Preparing certificate…";try{await sendCertificateViaWhatsApp()}catch(err){alert(err.message||"Certificate could not be shared.")}finally{btn.disabled=false;btn.textContent=original}});el("loginForm").addEventListener("submit",async event=>{event.preventDefault();const email=normaliseSpace(el("loginEmail").value).toLowerCase(),pin=el("loginPin").value;if(!email||!pin) return;el("loginBtn").disabled=true;setAuthMessage("loginMessage","Signing in…");try{await login(email,pin)}catch(err){setAuthMessage("loginMessage",err.message||"Sign in failed.","error")}finally{el("loginBtn").disabled=false}});el("changePinForm").addEventListener("submit",async event=>{event.preventDefault();const pin=el("newPin").value,confirm=el("confirmPin").value;if(pin.length<4){setAuthMessage("changePinMessage","PIN must contain at least 4 characters.","error");return}if(pin!==confirm){setAuthMessage("changePinMessage","The PINs do not match.","error");return}el("changePinBtn").disabled=true;setAuthMessage("changePinMessage","Updating PIN…");try{await changePin(pin)}catch(err){setAuthMessage("changePinMessage",err.message||"PIN could not be updated.","error")}finally{el("changePinBtn").disabled=false}});el("logoutBtn").addEventListener("click",()=>{clearAuth();officers=[];selectedOfficer=null;showLogin()});
 validateStoredSession();
 </script>
 </body>
