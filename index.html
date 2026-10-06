@@ -103,26 +103,30 @@ function managerDisplay(email){const clean=String(email||"").trim().toLowerCase(
 function trainingDate(attempt){
   if(!attempt) return null;
 
-  // Primary truth: recorded completion date when it is a valid ISO/date value.
-  const completionValue=String(attempt.completionSerial??"").trim();
-  if(completionValue){
-    const completionTs=Date.parse(completionValue);
+  const raw=String(attempt.completionSerial??"").trim();
+
+  // Historic Excel serials must be handled before Date.parse(), otherwise
+  // JavaScript can misread values such as 45900 as a year.
+  if(raw && /^\d+(\.\d+)?$/.test(raw)){
+    const n=Number(raw);
+    if(Number.isFinite(n) && n>20000 && n<100000){
+      const utcMs=Date.UTC(1899,11,30)+(n*86400000);
+      return new Date(utcMs);
+    }
+  }
+
+  // Preferred completion timestamp for current SharePoint/Jotform records.
+  if(raw){
+    const completionTs=Date.parse(raw);
     if(Number.isFinite(completionTs)) return new Date(completionTs);
   }
 
-  // Fallback truth: SharePoint Created timestamp.
+  // Last-resort fallback only. This is useful for malformed live records,
+  // but should not be allowed to make migrated Excel history look newer than Jotform.
   const createdValue=String(attempt.created??attempt.Created??"").trim();
   if(createdValue){
     const createdTs=Date.parse(createdValue);
     if(Number.isFinite(createdTs)) return new Date(createdTs);
-  }
-
-  // Legacy fallback: historic Excel serial values.
-  const n=Number(attempt.completionSerial);
-  if(Number.isFinite(n)){
-    const utcMs=Date.UTC(1899,11,30)+(n*86400000);
-    const d=new Date(utcMs);
-    return new Date(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate());
   }
 
   return null;
@@ -131,11 +135,21 @@ function dateOnly(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
 function addMonthsSafe(date,months){const d=new Date(date.getFullYear(),date.getMonth(),date.getDate());const day=d.getDate();d.setDate(1);d.setMonth(d.getMonth()+months);const last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();d.setDate(Math.min(day,last));return d}
 function formatDateUK(date){if(!date) return "—";return new Intl.DateTimeFormat("en-GB",{day:"2-digit",month:"2-digit",year:"numeric"}).format(date)}
 function latestAttempt(attempts,staffId){
-  return(attempts||[])
+  const matches=(attempts||[])
     .filter(a=>String(a.staffID??"").trim()===String(staffId).trim())
     .map(a=>({...a,parsedDate:trainingDate(a)}))
-    .filter(a=>a.parsedDate instanceof Date&&!Number.isNaN(a.parsedDate.getTime()))
-    .sort((a,b)=>b.parsedDate-a.parsedDate)[0]||null
+    .filter(a=>a.parsedDate instanceof Date&&!Number.isNaN(a.parsedDate.getTime()));
+
+  // Once an officer has a Jotform record for this course, Jotform becomes the
+  // authoritative source. Migrated Excel history remains available only when
+  // there is no Jotform attempt for that officer/course.
+  const jotform=matches.filter(a=>{
+    const source=String(a.source??a.SourceWorkbook??a.sourceWorkbook??"").trim().toLowerCase();
+    return source==="jotform";
+  });
+
+  const pool=jotform.length?jotform:matches;
+  return pool.sort((a,b)=>b.parsedDate-a.parsedDate)[0]||null;
 }
 function courseStatus(attempt){if(!attempt) return {code:"not-taken",label:"Not Taken",date:null,attempt:null};const completed=trainingDate(attempt);if(!attempt.pass) return {code:"failed",label:"Failed",date:completed,attempt};if(!completed) return {code:"failed",label:"Failed",date:null,attempt};const today=dateOnly(new Date());const due=addMonthsSafe(completed,11);const expiry=addMonthsSafe(completed,12);if(today>=expiry) return {code:"expired",label:"Expired",date:completed,attempt,due,expiry};if(today>=due) return {code:"due",label:"Reassessment Due",date:completed,attempt,due,expiry};return {code:"current",label:"Current",date:completed,attempt,due,expiry}}
 function overallStatus(courseMap){const s=Object.values(courseMap);if(s.every(x=>x.code==="current")) return {code:"green",label:"Green — Fully Current"};if(s.every(x=>["current","due"].includes(x.code))&&s.some(x=>x.code==="due")) return {code:"amber",label:"Amber — Reassessment Due"};return {code:"red",label:"Red — Action Required"}}
@@ -191,10 +205,11 @@ function showLoading(message="Loading compliance data…"){
   loadingTick=setInterval(()=>{
     const elapsed=(Date.now()-started)/1000;
     let target;
-    if(elapsed<8) target=(elapsed/8)*28;
-    else if(elapsed<18) target=28+((elapsed-8)/10)*34;
-    else if(elapsed<27) target=62+((elapsed-18)/9)*28;
-    else target=Math.min(97,90+((elapsed-27)/8)*7);
+    if(elapsed<15) target=(elapsed/15)*24;
+    else if(elapsed<30) target=24+((elapsed-15)/15)*28;
+    else if(elapsed<45) target=52+((elapsed-30)/15)*28;
+    else if(elapsed<60) target=80+((elapsed-45)/15)*17;
+    else target=97;
     if(target>loadingProgress) setLoadingProgress(Math.min(target,97));
   },250);
 }
