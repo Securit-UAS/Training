@@ -100,12 +100,44 @@ let officers=[],activeFilter="all",activeProvider="all",selectedOfficer=null,aut
 const el=id=>document.getElementById(id);
 function normaliseSpace(v){return String(v??"").trim().replace(/\s+/g," ")} function normaliseKey(v){return normaliseSpace(v).toLowerCase()} function parseCreated(v){const t=Date.parse(v||"");return Number.isFinite(t)?t:0}
 function managerDisplay(email){const clean=String(email||"").trim().toLowerCase();if(!clean) return "Not assigned";if(MANAGER_NAMES[clean]) return MANAGER_NAMES[clean];const local=clean.split("@")[0].replace(/[._-]+/g," ").replace(/\b\w/g,c=>c.toUpperCase());return local||clean}
-function excelSerialToDate(serial){const n=Number(serial);if(!Number.isFinite(n)) return null;const utcMs=Date.UTC(1899,11,30)+(n*86400000);const d=new Date(utcMs);return new Date(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate())}
+function trainingDate(attempt){
+  if(!attempt) return null;
+
+  // Primary truth: recorded completion date when it is a valid ISO/date value.
+  const completionValue=String(attempt.completionSerial??"").trim();
+  if(completionValue){
+    const completionTs=Date.parse(completionValue);
+    if(Number.isFinite(completionTs)) return new Date(completionTs);
+  }
+
+  // Fallback truth: SharePoint Created timestamp.
+  const createdValue=String(attempt.created??attempt.Created??"").trim();
+  if(createdValue){
+    const createdTs=Date.parse(createdValue);
+    if(Number.isFinite(createdTs)) return new Date(createdTs);
+  }
+
+  // Legacy fallback: historic Excel serial values.
+  const n=Number(attempt.completionSerial);
+  if(Number.isFinite(n)){
+    const utcMs=Date.UTC(1899,11,30)+(n*86400000);
+    const d=new Date(utcMs);
+    return new Date(d.getUTCFullYear(),d.getUTCMonth(),d.getUTCDate());
+  }
+
+  return null;
+}
 function dateOnly(d){return new Date(d.getFullYear(),d.getMonth(),d.getDate())}
 function addMonthsSafe(date,months){const d=new Date(date.getFullYear(),date.getMonth(),date.getDate());const day=d.getDate();d.setDate(1);d.setMonth(d.getMonth()+months);const last=new Date(d.getFullYear(),d.getMonth()+1,0).getDate();d.setDate(Math.min(day,last));return d}
 function formatDateUK(date){if(!date) return "—";return new Intl.DateTimeFormat("en-GB",{day:"2-digit",month:"2-digit",year:"numeric"}).format(date)}
-function latestAttempt(attempts,staffId){return(attempts||[]).filter(a=>String(a.staffID??"").trim()===String(staffId)).map(a=>({...a,serial:Number(a.completionSerial)})).filter(a=>Number.isFinite(a.serial)).sort((a,b)=>b.serial-a.serial)[0]||null}
-function courseStatus(attempt){if(!attempt) return {code:"not-taken",label:"Not Taken",date:null,attempt:null};const completed=excelSerialToDate(attempt.completionSerial);if(!attempt.pass) return {code:"failed",label:"Failed",date:completed,attempt};if(!completed) return {code:"failed",label:"Failed",date:null,attempt};const today=dateOnly(new Date());const due=addMonthsSafe(completed,11);const expiry=addMonthsSafe(completed,12);if(today>=expiry) return {code:"expired",label:"Expired",date:completed,attempt,due,expiry};if(today>=due) return {code:"due",label:"Reassessment Due",date:completed,attempt,due,expiry};return {code:"current",label:"Current",date:completed,attempt,due,expiry}}
+function latestAttempt(attempts,staffId){
+  return(attempts||[])
+    .filter(a=>String(a.staffID??"").trim()===String(staffId).trim())
+    .map(a=>({...a,parsedDate:trainingDate(a)}))
+    .filter(a=>a.parsedDate instanceof Date&&!Number.isNaN(a.parsedDate.getTime()))
+    .sort((a,b)=>b.parsedDate-a.parsedDate)[0]||null
+}
+function courseStatus(attempt){if(!attempt) return {code:"not-taken",label:"Not Taken",date:null,attempt:null};const completed=trainingDate(attempt);if(!attempt.pass) return {code:"failed",label:"Failed",date:completed,attempt};if(!completed) return {code:"failed",label:"Failed",date:null,attempt};const today=dateOnly(new Date());const due=addMonthsSafe(completed,11);const expiry=addMonthsSafe(completed,12);if(today>=expiry) return {code:"expired",label:"Expired",date:completed,attempt,due,expiry};if(today>=due) return {code:"due",label:"Reassessment Due",date:completed,attempt,due,expiry};return {code:"current",label:"Current",date:completed,attempt,due,expiry}}
 function overallStatus(courseMap){const s=Object.values(courseMap);if(s.every(x=>x.code==="current")) return {code:"green",label:"Green — Fully Current"};if(s.every(x=>["current","due"].includes(x.code))&&s.some(x=>x.code==="due")) return {code:"amber",label:"Amber — Reassessment Due"};return {code:"red",label:"Red — Action Required"}}
 function selectLatestStaffRows(staff){const unique=new Map();for(const person of(staff||[])){const id=String(person.staffId??"").trim();if(!id) continue;const candidate={staffId:id,fullName:normaliseSpace(person.fullName)||`Staff ${id}`,contractor:normaliseSpace(person.Contractor),siteName:normaliseSpace(person.siteName),phone:normaliseSpace(person.phone),created:person.created||person.Created||""};const existing=unique.get(id);if(!existing||parseCreated(candidate.created)>=parseCreated(existing.created)) unique.set(id,candidate)}return[...unique.values()]}
 function buildOfficerData(payload){const siteMap=new Map();for(const site of(payload.sites||[])){const key=normaliseKey(site.siteName);if(!key) continue;siteMap.set(key,{siteName:normaliseSpace(site.siteName),managerEmail:normaliseSpace(site.managerEmail),siteId:String(site.siteId??""),active:normaliseSpace(site.active)})}return selectLatestStaffRows(payload.staff).map(person=>{const site=siteMap.get(normaliseKey(person.siteName));const managerEmail=site?.managerEmail||"";const courses={};for(const c of COURSE_DEFS) courses[c.key]=courseStatus(latestAttempt(payload[c.key],person.staffId));return {...person,managerEmail,managerName:managerDisplay(managerEmail),siteMatched:Boolean(site),courses,overall:overallStatus(courses)}}).sort((a,b)=>a.fullName.localeCompare(b.fullName,"en-GB"))}
